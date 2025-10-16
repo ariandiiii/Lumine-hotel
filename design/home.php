@@ -12,7 +12,8 @@
 </head>
 
 <body>
-    <div class="relative bg-[url('../image/bg.jpg')] bg-cover bg-center pb-[90px] " data-aos="fade-in">
+    <!-- ini bagian header navbar -->
+    <div class="relative bg-[url('../image/bg.jpg')] bg-cover bg-center pb-[90px] rounded-b-[50px]" data-aos="fade-in">
         <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-black/40 to-transparent"></div>
 
         <nav class="relative bg-gradient-to-b from-black to-transparent">
@@ -39,9 +40,11 @@
 
         </section>
     </div>
-    <section class="px-[50px] mt-[50px] ">
+
+    <!-- ini bagian yg promo harga -->
+    <section class="px-[50px] mt-[40px] ">
         <div class="py-[8px] bg-[#D1D5DB] rounded-[10px]">
-            <div class="flex flex-row gap-[10px] items-center bg-[url('../image/h2.png')] bg-cover bg-center p-[10px] relative overflow-hidden rounded-r-[10px] text-black">
+            <div class="flex flex-row gap-[10px] items-center bg-[url('../image/h2.png')] bg-cover bg-center px-[25px] p-[10px] relative overflow-hidden rounded-r-[10px] text-black">
                 <div class="absolute inset-0 bg-gradient-to-r from-white/100 to-transparent rounded-r-[10px]"></div>
                 <div class="relative font-bold text-[20px]">
                     <p>Hotel terbaik</p>
@@ -56,11 +59,162 @@
         </div>
     </section>
 
+    <!-- ini bagian rekomendasi kamar -->
+    <section class="px-[50px]  mt-[40px]">
+        <p class="text-[24px] mb-[5px] font-semibold">Rekomendasi Kamar terbaik</p>
+        <div class="flex flex-row gap-[10px] pb-[15px]  overflow-x-auto scroll-smooth scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100 whitespace-nowrap max-w-full ">
+
+            <div class="min-w-[280px]  shadow-[0_0px_25px_rgba(0,0,0,0.2)] rounded-[10px]  inline-block">
+                <a href="">
+                    <div>
+                        <img src="../image/h1.png" alt="" class="rounded-t-[10px]">
+                    </div>
+                    <div>
+                        <div class="p-[10px]">
+                            <p class="text-[23px] font-semibold">Luxury hotel</p>
+                            <div class="flex flex-row gap-[3px] items-center">
+                                <img src="../image/loca2.png" alt="" class="w-[15px] h-[15px]">
+                                <p>bali</p>
+                            </div>
+                            <p class="bg-[#335c67] inline-block py-[2px] px-[5px] rounded-[5px] text-white">4,5</p>
+                            <div class="flex flex-row items-center justify-between mt-[10px]">
+                                <div class="leading-tight">
+                                    <p class="text-[18px] font-semibold">Harga</p>
+                                    <p class="text-[#b0323a] font-semibold">1.000.000</p>
+                                </div>
+                                <div>
+                                    <a href="">
+                                        <p class="bg-[#335c67] py-[5px] inline-block px-[10px] hover:scale-105 transition-all duration-200 rounded-[7px] text-white">Lihat detail</p>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="min-w-[280px]  shadow-[0_0px_25px_rgba(0,0,0,0.2)] rounded-[10px]  inline-block">
+                <a href="">
+                    <div>
+                        <img src="../image/h1.png" alt="" class="rounded-t-[10px]">
+                    </div>
+                    <div>
+                        <div class="p-[10px]">
+                            <p class="text-[23px] font-semibold">Luxury hotel</p>
+                            <div class="flex flex-row gap-[3px] items-center">
+                                <img src="../image/loca2.png" alt="" class="w-[15px] h-[15px]">
+                                <p>bali</p>
+                            </div>
+                            <p class="bg-[#335c67] inline-block py-[2px] px-[5px] rounded-[5px] text-white">4,5</p>
+                            <div class="flex flex-row items-center justify-between mt-[10px]">
+                                <div class="leading-tight">
+                                    <p class="text-[18px] font-semibold">Harga</p>
+                                    <p class="text-[#b0323a] font-semibold">1.000.000</p>
+                                </div>
+                                <div>
+                                    <a href="">
+                                        <p class="bg-[#335c67] py-[5px] inline-block px-[10px] hover:scale-105 transition-all duration-200 rounded-[7px] text-white">Lihat detail</p>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="min-w-[280px]  shadow-[0_0px_25px_rgba(0,0,0,0.2)] rounded-[10px]  inline-block">
+                <a href="">
+                    <div>
+                        <img src="../image/h1.png" alt="" class="rounded-t-[10px]">
+                    </div>
+                    <div>
+                        <div class="p-[10px]">
+                            <p class="text-[23px] font-semibold">Luxury hotel</p>
+                            <div class="flex flex-row gap-[3px] items-center">
+                                <img src="../image/loca2.png" alt="" class="w-[15px] h-[15px]">
+                                <p>bali</p>
+                            </div>
+                            <p class="bg-[#335c67] inline-block py-[2px] px-[5px] rounded-[5px] text-white">4,5</p>
+                            <div class="flex flex-row items-center justify-between mt-[10px]">
+                                <div class="leading-tight">
+                                    <p class="text-[18px] font-semibold">Harga</p>
+                                    <p class="text-[#b0323a] font-semibold">1.000.000</p>
+                                </div>
+                                <div>
+                                    <a href="">
+                                        <p class="bg-[#335c67] py-[5px] inline-block px-[10px] hover:scale-105 transition-all duration-200 rounded-[7px] text-white">Lihat detail</p>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="min-w-[280px]  shadow-[0_0px_25px_rgba(0,0,0,0.2)] rounded-[10px]  inline-block">
+                <a href="">
+                    <div>
+                        <img src="../image/h1.png" alt="" class="rounded-t-[10px]">
+                    </div>
+                    <div>
+                        <div class="p-[10px]">
+                            <p class="text-[23px] font-semibold">Luxury hotel</p>
+                            <div class="flex flex-row gap-[3px] items-center">
+                                <img src="../image/loca2.png" alt="" class="w-[15px] h-[15px]">
+                                <p>bali</p>
+                            </div>
+                            <p class="bg-[#335c67] inline-block py-[2px] px-[5px] rounded-[5px] text-white">4,5</p>
+                            <div class="flex flex-row items-center justify-between mt-[10px]">
+                                <div class="leading-tight">
+                                    <p class="text-[18px] font-semibold">Harga</p>
+                                    <p class="text-[#b0323a] font-semibold">1.000.000</p>
+                                </div>
+                                <div>
+                                    <a href="">
+                                        <p class="bg-[#335c67] py-[5px] inline-block px-[10px] hover:scale-105 transition-all duration-200 rounded-[7px] text-white">Lihat detail</p>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="min-w-[280px]  shadow-[0_0px_25px_rgba(0,0,0,0.2)] rounded-[10px]  inline-block">
+                <a href="">
+                    <div>
+                        <img src="../image/h1.png" alt="" class="rounded-t-[10px]">
+                    </div>
+                    <div>
+                        <div class="p-[10px]">
+                            <p class="text-[23px] font-semibold">Luxury hotel</p>
+                            <div class="flex flex-row gap-[3px] items-center">
+                                <img src="../image/loca2.png" alt="" class="w-[15px] h-[15px]">
+                                <p>bali</p>
+                            </div>
+                            <p class="bg-[#335c67] inline-block py-[2px] px-[5px] rounded-[5px] text-white">4,5</p>
+                            <div class="flex flex-row items-center justify-between mt-[10px]">
+                                <div class="leading-tight">
+                                    <p class="text-[18px] font-semibold">Harga</p>
+                                    <p class="text-[#b0323a] font-semibold">1.000.000</p>
+                                </div>
+                                <div>
+                                    <a href="">
+                                        <p class="bg-[#335c67] py-[5px] inline-block px-[10px] hover:scale-105 transition-all duration-200 rounded-[7px] text-white">Lihat detail</p>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+          
+
+        </div>
+    </section>
+
+    <!-- ini bagian destinasi populer -->
     <section>
-        <div class="flex flex-col text-center px-[50px] mt-[50px] gap-[15px]" data-aos="fade-up">
+        <div class="flex flex-col text-center px-[50px] mt-[40px] gap-[15px]" data-aos="fade-zoom">
             <div>
                 <div class="flex flex-row items-center justify-center gap-[5px]">
-                    <img src="../image/location.png" alt="" class="w-[25px] h-[25px]">
+                    <img src="../image/loca2.png" alt="" class="w-[25px] h-[25px]">
                     <p class="text-[25px] font-semibold"> Destinasi Populer</p>
                 </div>
                 <p>Jelajahi destinasi wisata populer di Indonesia dan temukan hotel terbaik di setiap kota</p>
@@ -112,43 +266,9 @@
         </div>
     </section>
 
-    <section class="px-[50px]  mt-[50px]">
-        <p class="text-[24px] mb-[5px] font-semibold">Rekomendasi Kamar terbaik</p>
-        <div class="flex flex-row gap-[10px] pb-[15px]  overflow-x-auto scroll-smooth scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100 whitespace-nowrap max-w-full ">
-            <div class="min-w-[280px]  shadow-[0_0px_25px_rgba(0,0,0,0.2)] rounded-[10px]  inline-block">
-                <a href="">
-                    <div>
-                        <img src="../image/h1.png" alt="" class="rounded-t-[10px]">
-                    </div>
-                    <div>
-                        <div class="p-[10px]">
-                            <p class="text-[23px] font-semibold">Luxury hotel</p>
-                            <div class="flex flex-row gap-[3px] items-center">
-                                <img src="../image/loca2.png" alt="" class="w-[15px] h-[15px]">
-                                <p>bali</p>
-                            </div>
-                            <p class="bg-[#335c67] inline-block py-[2px] px-[5px] rounded-[5px] text-white">4,5</p>
-                            <div class="flex flex-row items-center justify-between mt-[10px]">
-                                <div class="leading-tight">
-                                    <p class="text-[18px] font-semibold">Harga</p>
-                                    <p class="text-[#b0323a] font-semibold">1.000.000</p>
-                                </div>
-                                <div>
-                                    <a href="">
-                                        <p class="bg-[#335c67] py-[5px] inline-block px-[10px] rounded-[7px] text-white">Lihat detail</p>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-
-        </div>
-    </section>
-
-    <section class="px-[50px] mt-[50px]">
-        <div data-aos="fade-down">
+    <!-- ini bagian seluruh kamar -->
+    <section class="px-[50px] mt-[40px]">
+        <div data-aos="fade-right">
             <p class="text-[24px] mb-[5px] font-semibold">Seluruh kamar</p>
             <div class="grid grid-cols-2 gap-[10px]">
 
@@ -162,7 +282,7 @@
                             <img src="../image/loca2.png" alt="" class="w-[15px] h-[15px]">
                             <p>Alamat</p>
                         </div>
-                        <p class="bg-[#8ebd9d] inline-block py-[] px-[5px] rounded-[5px] text-white">4,5</p>
+                        <p class="bg-[#335c67] inline-block py-[] px-[5px] rounded-[5px] text-white">4,5</p>
                         <div class="flex flex-row items-center justify-between mt-[10px]">
                             <div class="leading-tight">
                                 <p class="text-[18px] font-semibold">Harga</p>
@@ -170,28 +290,124 @@
                             </div>
                             <div>
                                 <a href="">
-                                    <p class="bg-[#335c67] py-[5px] inline-block px-[10px] rounded-[7px] text-white">Lihat detail</p>
+                                    <p class="bg-[#335c67] py-[5px] inline-block px-[10px] hover:scale-105 transition-all duration-200 rounded-[7px] text-white">Lihat detail</p>
                                 </a>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div class="flex flex-1 flex-row gap-[10px] shadow-[0_0px_20px_rgba(0,0,0,0.2)] rounded-sm">
+                    <div>
+                        <img src="../image/h1.png" alt="" class="w-[250px] rounded-l-sm">
+                    </div>
+                    <div class="min-w-[55%] p-[10px]">
+                        <p class="text-[25px] font-semibold">Nama hotel</p>
+                        <div class="flex flex-row gap-[3px] items-center">
+                            <img src="../image/loca2.png" alt="" class="w-[15px] h-[15px]">
+                            <p>Alamat</p>
+                        </div>
+                        <p class="bg-[#335c67] inline-block py-[] px-[5px] rounded-[5px] text-white">4,5</p>
+                        <div class="flex flex-row items-center justify-between mt-[10px]">
+                            <div class="leading-tight">
+                                <p class="text-[18px] font-semibold">Harga</p>
+                                <p class="text-[#335c67] font-semibold">1.000.000</p>
+                            </div>
+                            <div>
+                                <a href="">
+                                    <p class="bg-[#335c67] py-[5px] inline-block px-[10px] hover:scale-105 transition-all duration-200 rounded-[7px] text-white">Lihat detail</p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-1 flex-row gap-[10px] shadow-[0_0px_20px_rgba(0,0,0,0.2)] rounded-sm">
+                    <div>
+                        <img src="../image/h1.png" alt="" class="w-[250px] rounded-l-sm">
+                    </div>
+                    <div class="min-w-[55%] p-[10px]">
+                        <p class="text-[25px] font-semibold">Nama hotel</p>
+                        <div class="flex flex-row gap-[3px] items-center">
+                            <img src="../image/loca2.png" alt="" class="w-[15px] h-[15px]">
+                            <p>Alamat</p>
+                        </div>
+                        <p class="bg-[#335c67] inline-block py-[] px-[5px] rounded-[5px] text-white">4,5</p>
+                        <div class="flex flex-row items-center justify-between mt-[10px]">
+                            <div class="leading-tight">
+                                <p class="text-[18px] font-semibold">Harga</p>
+                                <p class="text-[#335c67] font-semibold">1.000.000</p>
+                            </div>
+                            <div>
+                                <a href="">
+                                    <p class="bg-[#335c67] py-[5px] inline-block px-[10px] hover:scale-105 transition-all duration-200 rounded-[7px] text-white">Lihat detail</p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-1 flex-row gap-[10px] shadow-[0_0px_20px_rgba(0,0,0,0.2)] rounded-sm">
+                    <div>
+                        <img src="../image/h1.png" alt="" class="w-[250px] rounded-l-sm">
+                    </div>
+                    <div class="min-w-[55%] p-[10px]">
+                        <p class="text-[25px] font-semibold">Nama hotel</p>
+                        <div class="flex flex-row gap-[3px] items-center">
+                            <img src="../image/loca2.png" alt="" class="w-[15px] h-[15px]">
+                            <p>Alamat</p>
+                        </div>
+                        <p class="bg-[#335c67] inline-block py-[] px-[5px] rounded-[5px] text-white">4,5</p>
+                        <div class="flex flex-row items-center justify-between mt-[10px]">
+                            <div class="leading-tight">
+                                <p class="text-[18px] font-semibold">Harga</p>
+                                <p class="text-[#335c67] font-semibold">1.000.000</p>
+                            </div>
+                            <div>
+                                <a href="">
+                                    <p class="bg-[#335c67] py-[5px] inline-block px-[10px] hover:scale-105 transition-all duration-200 rounded-[7px] text-white">Lihat detail</p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+              
 
 
             </div>
         </div>
     </section>
 
-    <footer class="p-[50px] mt-[50px]">
-        <div>
-            <div>
-                <p>LUMINE HOTEL</p>
+    <!-- ini footer -->
+    <footer class="px-[50px] py-[20px] mt-[40px] bg-[#20393F] text-white" data-aos="fade-in">
+        <div class="flex flex-col gap-[15px]">
+            <div class="flex text-[25px] gap-[20px]">
+                <p class="font-bold">LUMINE <span class="text-[#e09f3e]">HOTEL</span></p>
                 <p>The World Fastest Growing Hotel Chain </p>
+            </div>
+            <hr class="border-[#4D8791]">
+            <div class="flex flex-row gap-[10px]">
+                <div class="flex-2">
+                    <p class="text-[20px] font-semibold">Tentang kami</p>
+                    <p>Hotel kami menawarkan pengalaman menginap yang tidak akan terlupakan dengan fasilitas yang mewah dan pelayanan yang terbaik</p>
+                </div>
+                <div class="flex-1">
+                    <p class="text-[20px] font-semibold">Hubungi kami</p>
+                    <p>Jl. Sudirman No. 123
+                        Jakarta Pusat, 10110</p>
+                    <p>+6289483948</p>
+                    <p>lumine@gmail.com</p>
+                </div>
+            </div>
+            <hr class="border-[#4D8791]">
+            <div class="text-[12px] flex flex-row justify-between">
+                <p>2025 hotel kami. semua hak dilindungi</p>
+                <div class="flex flex-row gap-[10px]">
+                    <p>Kebijakan privasi</p>
+                    <p>Syarat dan ketentuan</p>
+                </div>
             </div>
         </div>
     </footer>
 
-
+    <!-- script buat aos animasi -->
     <script>
         AOS.init({
             duration: 900,
