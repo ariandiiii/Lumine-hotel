@@ -7,8 +7,28 @@
     <link rel="icon" type="image/png" href="../image/logobener.png" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <title>Home</title>
+    <style>
+        ::-webkit-scrollbar {
+            height: 6px;
+            width: 7px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 9999px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #999;
+        }
+    </style>
 </head>
 
 <body>
@@ -16,18 +36,18 @@
     <div class="relative bg-[url('../image/bg.jpg')] bg-cover bg-center pb-[90px] rounded-b-[50px]" data-aos="fade-in">
         <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-black/40 to-transparent"></div>
 
-        <nav class="relative bg-gradient-to-b from-black to-transparent">
-            <div class="flex flex-row  px-[50px] py-[20px] items-center justify-between">
-                <div class="flex flex-row text-center items-center gap-[5px] ">
-                    <img src="../image/logobener.png" alt="" class="w-[45px]">
-                    <p class="font-semibold text-white text-[19px]">LUMINE <span class="font-bold text-[#e09f3e]">HOTEL</span> </p>
-                </div>
-
-                <div>
-                    <a href="">
-                        <p class="bg-[#335c67] px-[15px] py-[8px] rounded-[30px] hover:scale-105 transition-all duration-200 text-white">Gabung | Daftar</p>
-                    </a>
-                </div>
+        <nav class="relative bg-gradient-to-b from-black to-transparent ">
+            <a href="../design/home.php">
+                <div class="flex flex-row  px-[50px] py-[20px] items-center justify-between">
+                    <div class="flex flex-row text-center items-center gap-[5px] ">
+                        <img src="../image/logobener.png" alt="" class="w-[45px]">
+                        <p class="font-semibold text-white text-[19px]">LUMINE <span class="font-bold text-[#e09f3e]">HOTEL</span> </p>
+                    </div>
+            </a>
+            <div>
+                <button id="openLogin">
+                    <p class="bg-[#335c67] px-[15px] py-[8px] rounded-[30px] hover:scale-105 transition-all duration-200 text-white">Gabung | Daftar</p>
+                </button>
             </div>
         </nav>
 
@@ -42,7 +62,7 @@
     </div>
 
     <!-- ini bagian yg promo harga -->
-    <section class="px-[50px] mt-[40px] ">
+    <section class="px-[50px] mt-[40px] " data-aos="fade-up">
         <div class="py-[8px] bg-[#D1D5DB] rounded-[10px]">
             <div class="flex flex-row gap-[10px] items-center bg-[url('../image/h2.png')] bg-cover bg-center px-[25px] p-[10px] relative overflow-hidden rounded-r-[10px] text-black">
                 <div class="absolute inset-0 bg-gradient-to-r from-white/100 to-transparent rounded-r-[10px]"></div>
@@ -60,152 +80,172 @@
     </section>
 
     <!-- ini bagian rekomendasi kamar -->
-    <section class="px-[50px]  mt-[40px]">
+    <section class="px-[50px]  mt-[40px]" data-aos="fade-right">
         <p class="text-[24px] mb-[5px] font-semibold">Rekomendasi Kamar terbaik</p>
-        <div class="flex flex-row gap-[10px] pb-[15px]  overflow-x-auto scroll-smooth scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100 whitespace-nowrap max-w-full ">
+        <div class="swiper">
+            <div class="swiper-wrapper flex flex-row gap-[10px] pb-[15px]  whitespace-nowrap max-w-full ">
 
-            <div class="min-w-[280px]  shadow-[0_0px_25px_rgba(0,0,0,0.2)] rounded-[10px]  inline-block">
-                <a href="">
-                    <div>
-                        <img src="../image/h1.png" alt="" class="rounded-t-[10px]">
-                    </div>
-                    <div>
-                        <div class="p-[10px]">
-                            <p class="text-[23px] font-semibold">Luxury hotel</p>
-                            <div class="flex flex-row gap-[3px] items-center">
-                                <img src="../image/loca2.png" alt="" class="w-[15px] h-[15px]">
-                                <p>bali</p>
-                            </div>
-                            <p class="bg-[#335c67] inline-block py-[2px] px-[5px] rounded-[5px] text-white">4,5</p>
-                            <div class="flex flex-row items-center justify-between mt-[10px]">
-                                <div class="leading-tight">
-                                    <p class="text-[18px] font-semibold">Harga</p>
-                                    <p class="text-[#b0323a] font-semibold">1.000.000</p>
+                <div class="swiper-slide min-w-[280px]  shadow-[0_0px_25px_rgba(0,0,0,0.2)] rounded-[10px]  inline-block ">
+                    <a href="">
+                        <div>
+                            <img src="../image/h1.png" alt="" class="rounded-t-[10px]">
+                        </div>
+                        <div>
+                            <div class="p-[10px]">
+                                <p class="text-[23px] font-semibold">Luxury hotel</p>
+                                <div class="flex flex-row gap-[3px] items-center">
+                                    <img src="../image/loca2.png" alt="" class="w-[15px] h-[15px]">
+                                    <p>bali</p>
                                 </div>
-                                <div>
-                                    <a href="">
-                                        <p class="bg-[#335c67] py-[5px] inline-block px-[10px] hover:scale-105 transition-all duration-200 rounded-[7px] text-white">Lihat detail</p>
-                                    </a>
+                                <div class="flex flex-row bg-[#335c67] inline-flex gap-[3px] py-[2px] px-[5px] rounded-[5px] text-white items-center">
+                                    <img src="../image/star.png" alt="" class="w-[15px] h-[15px]">
+                                    <p>4,5</p>
+                                </div>
+                                <div class="flex flex-row items-center justify-between mt-[10px]">
+                                    <div class="leading-tight">
+                                        <p class="text-[18px] font-semibold">Harga</p>
+                                        <p class="text-[#b0323a] font-semibold">1.000.000</p>
+                                    </div>
+                                    <div>
+                                        <a href="../design/detail_kmr.php">
+                                            <p class="bg-[#335c67] py-[5px] inline-block px-[10px] hover:scale-105 transition-all duration-200 rounded-[7px] text-white">Lihat detail</p>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </a>
-            </div>
-            <div class="min-w-[280px]  shadow-[0_0px_25px_rgba(0,0,0,0.2)] rounded-[10px]  inline-block">
-                <a href="">
-                    <div>
-                        <img src="../image/h1.png" alt="" class="rounded-t-[10px]">
-                    </div>
-                    <div>
-                        <div class="p-[10px]">
-                            <p class="text-[23px] font-semibold">Luxury hotel</p>
-                            <div class="flex flex-row gap-[3px] items-center">
-                                <img src="../image/loca2.png" alt="" class="w-[15px] h-[15px]">
-                                <p>bali</p>
-                            </div>
-                            <p class="bg-[#335c67] inline-block py-[2px] px-[5px] rounded-[5px] text-white">4,5</p>
-                            <div class="flex flex-row items-center justify-between mt-[10px]">
-                                <div class="leading-tight">
-                                    <p class="text-[18px] font-semibold">Harga</p>
-                                    <p class="text-[#b0323a] font-semibold">1.000.000</p>
+                    </a>
+                </div>
+                <div class="swiper-slide min-w-[280px]  shadow-[0_0px_25px_rgba(0,0,0,0.2)] rounded-[10px]  inline-block ">
+                    <a href="">
+                        <div>
+                            <img src="../image/h1.png" alt="" class="rounded-t-[10px]">
+                        </div>
+                        <div>
+                            <div class="p-[10px]">
+                                <p class="text-[23px] font-semibold">Luxury hotel</p>
+                                <div class="flex flex-row gap-[3px] items-center">
+                                    <img src="../image/loca2.png" alt="" class="w-[15px] h-[15px]">
+                                    <p>bali</p>
                                 </div>
-                                <div>
-                                    <a href="">
-                                        <p class="bg-[#335c67] py-[5px] inline-block px-[10px] hover:scale-105 transition-all duration-200 rounded-[7px] text-white">Lihat detail</p>
-                                    </a>
+                                <div class="flex flex-row bg-[#335c67] inline-flex gap-[3px] py-[2px] px-[5px] rounded-[5px] text-white items-center">
+                                    <img src="../image/star.png" alt="" class="w-[15px] h-[15px]">
+                                    <p>4,5</p>
+                                </div>
+                                <div class="flex flex-row items-center justify-between mt-[10px]">
+                                    <div class="leading-tight">
+                                        <p class="text-[18px] font-semibold">Harga</p>
+                                        <p class="text-[#b0323a] font-semibold">1.000.000</p>
+                                    </div>
+                                    <div>
+                                        <a href="../design/detail_kmr.php">
+                                            <p class="bg-[#335c67] py-[5px] inline-block px-[10px] hover:scale-105 transition-all duration-200 rounded-[7px] text-white">Lihat detail</p>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </a>
-            </div>
-            <div class="min-w-[280px]  shadow-[0_0px_25px_rgba(0,0,0,0.2)] rounded-[10px]  inline-block">
-                <a href="">
-                    <div>
-                        <img src="../image/h1.png" alt="" class="rounded-t-[10px]">
-                    </div>
-                    <div>
-                        <div class="p-[10px]">
-                            <p class="text-[23px] font-semibold">Luxury hotel</p>
-                            <div class="flex flex-row gap-[3px] items-center">
-                                <img src="../image/loca2.png" alt="" class="w-[15px] h-[15px]">
-                                <p>bali</p>
-                            </div>
-                            <p class="bg-[#335c67] inline-block py-[2px] px-[5px] rounded-[5px] text-white">4,5</p>
-                            <div class="flex flex-row items-center justify-between mt-[10px]">
-                                <div class="leading-tight">
-                                    <p class="text-[18px] font-semibold">Harga</p>
-                                    <p class="text-[#b0323a] font-semibold">1.000.000</p>
+                    </a>
+                </div>
+                <div class="swiper-slide min-w-[280px]  shadow-[0_0px_25px_rgba(0,0,0,0.2)] rounded-[10px]  inline-block ">
+                    <a href="">
+                        <div>
+                            <img src="../image/h1.png" alt="" class="rounded-t-[10px]">
+                        </div>
+                        <div>
+                            <div class="p-[10px]">
+                                <p class="text-[23px] font-semibold">Luxury hotel</p>
+                                <div class="flex flex-row gap-[3px] items-center">
+                                    <img src="../image/loca2.png" alt="" class="w-[15px] h-[15px]">
+                                    <p>bali</p>
                                 </div>
-                                <div>
-                                    <a href="">
-                                        <p class="bg-[#335c67] py-[5px] inline-block px-[10px] hover:scale-105 transition-all duration-200 rounded-[7px] text-white">Lihat detail</p>
-                                    </a>
+                                <div class="flex flex-row bg-[#335c67] inline-flex gap-[3px] py-[2px] px-[5px] rounded-[5px] text-white items-center">
+                                    <img src="../image/star.png" alt="" class="w-[15px] h-[15px]">
+                                    <p>4,5</p>
+                                </div>
+                                <div class="flex flex-row items-center justify-between mt-[10px]">
+                                    <div class="leading-tight">
+                                        <p class="text-[18px] font-semibold">Harga</p>
+                                        <p class="text-[#b0323a] font-semibold">1.000.000</p>
+                                    </div>
+                                    <div>
+                                        <a href="../design/detail_kmr.php">
+                                            <p class="bg-[#335c67] py-[5px] inline-block px-[10px] hover:scale-105 transition-all duration-200 rounded-[7px] text-white">Lihat detail</p>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </a>
-            </div>
-            <div class="min-w-[280px]  shadow-[0_0px_25px_rgba(0,0,0,0.2)] rounded-[10px]  inline-block">
-                <a href="">
-                    <div>
-                        <img src="../image/h1.png" alt="" class="rounded-t-[10px]">
-                    </div>
-                    <div>
-                        <div class="p-[10px]">
-                            <p class="text-[23px] font-semibold">Luxury hotel</p>
-                            <div class="flex flex-row gap-[3px] items-center">
-                                <img src="../image/loca2.png" alt="" class="w-[15px] h-[15px]">
-                                <p>bali</p>
-                            </div>
-                            <p class="bg-[#335c67] inline-block py-[2px] px-[5px] rounded-[5px] text-white">4,5</p>
-                            <div class="flex flex-row items-center justify-between mt-[10px]">
-                                <div class="leading-tight">
-                                    <p class="text-[18px] font-semibold">Harga</p>
-                                    <p class="text-[#b0323a] font-semibold">1.000.000</p>
+                    </a>
+                </div>
+                <div class="swiper-slide min-w-[280px]  shadow-[0_0px_25px_rgba(0,0,0,0.2)] rounded-[10px]  inline-block ">
+                    <a href="">
+                        <div>
+                            <img src="../image/h1.png" alt="" class="rounded-t-[10px]">
+                        </div>
+                        <div>
+                            <div class="p-[10px]">
+                                <p class="text-[23px] font-semibold">Luxury hotel</p>
+                                <div class="flex flex-row gap-[3px] items-center">
+                                    <img src="../image/loca2.png" alt="" class="w-[15px] h-[15px]">
+                                    <p>bali</p>
                                 </div>
-                                <div>
-                                    <a href="">
-                                        <p class="bg-[#335c67] py-[5px] inline-block px-[10px] hover:scale-105 transition-all duration-200 rounded-[7px] text-white">Lihat detail</p>
-                                    </a>
+                                <div class="flex flex-row bg-[#335c67] inline-flex gap-[3px] py-[2px] px-[5px] rounded-[5px] text-white items-center">
+                                    <img src="../image/star.png" alt="" class="w-[15px] h-[15px]">
+                                    <p>4,5</p>
+                                </div>
+                                <div class="flex flex-row items-center justify-between mt-[10px]">
+                                    <div class="leading-tight">
+                                        <p class="text-[18px] font-semibold">Harga</p>
+                                        <p class="text-[#b0323a] font-semibold">1.000.000</p>
+                                    </div>
+                                    <div>
+                                        <a href="../design/detail_kmr.php">
+                                            <p class="bg-[#335c67] py-[5px] inline-block px-[10px] hover:scale-105 transition-all duration-200 rounded-[7px] text-white">Lihat detail</p>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </a>
-            </div>
-            <div class="min-w-[280px]  shadow-[0_0px_25px_rgba(0,0,0,0.2)] rounded-[10px]  inline-block">
-                <a href="">
-                    <div>
-                        <img src="../image/h1.png" alt="" class="rounded-t-[10px]">
-                    </div>
-                    <div>
-                        <div class="p-[10px]">
-                            <p class="text-[23px] font-semibold">Luxury hotel</p>
-                            <div class="flex flex-row gap-[3px] items-center">
-                                <img src="../image/loca2.png" alt="" class="w-[15px] h-[15px]">
-                                <p>bali</p>
-                            </div>
-                            <p class="bg-[#335c67] inline-block py-[2px] px-[5px] rounded-[5px] text-white">4,5</p>
-                            <div class="flex flex-row items-center justify-between mt-[10px]">
-                                <div class="leading-tight">
-                                    <p class="text-[18px] font-semibold">Harga</p>
-                                    <p class="text-[#b0323a] font-semibold">1.000.000</p>
+                    </a>
+                </div>
+                <div class="swiper-slide min-w-[280px]  shadow-[0_0px_25px_rgba(0,0,0,0.2)] rounded-[10px]  inline-block ">
+                    <a href="">
+                        <div>
+                            <img src="../image/h1.png" alt="" class="rounded-t-[10px]">
+                        </div>
+                        <div>
+                            <div class="p-[10px]">
+                                <p class="text-[23px] font-semibold">Luxury hotel</p>
+                                <div class="flex flex-row gap-[3px] items-center">
+                                    <img src="../image/loca2.png" alt="" class="w-[15px] h-[15px]">
+                                    <p>bali</p>
                                 </div>
-                                <div>
-                                    <a href="">
-                                        <p class="bg-[#335c67] py-[5px] inline-block px-[10px] hover:scale-105 transition-all duration-200 rounded-[7px] text-white">Lihat detail</p>
-                                    </a>
+                                <div class="flex flex-row bg-[#335c67] inline-flex gap-[3px] py-[2px] px-[5px] rounded-[5px] text-white items-center">
+                                    <img src="../image/star.png" alt="" class="w-[15px] h-[15px]">
+                                    <p>4,5</p>
+                                </div>
+                                <div class="flex flex-row items-center justify-between mt-[10px]">
+                                    <div class="leading-tight">
+                                        <p class="text-[18px] font-semibold">Harga</p>
+                                        <p class="text-[#b0323a] font-semibold">1.000.000</p>
+                                    </div>
+                                    <div>
+                                        <a href="../design/detail_kmr.php">
+                                            <p class="bg-[#335c67] py-[5px] inline-block px-[10px] hover:scale-105 transition-all duration-200 rounded-[7px] text-white">Lihat detail</p>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </a>
-            </div>
-          
+                    </a>
+                </div>
 
+
+            </div>
+
+            <!-- tanda buat slider -->
+            <div class="swiper-pagination mt-[500px]"></div>
         </div>
     </section>
 
@@ -268,7 +308,7 @@
 
     <!-- ini bagian seluruh kamar -->
     <section class="px-[50px] mt-[40px]">
-        <div data-aos="fade-right">
+        <div data-aos="fade-up">
             <p class="text-[24px] mb-[5px] font-semibold">Seluruh kamar</p>
             <div class="grid grid-cols-2 gap-[10px]">
 
@@ -282,14 +322,17 @@
                             <img src="../image/loca2.png" alt="" class="w-[15px] h-[15px]">
                             <p>Alamat</p>
                         </div>
-                        <p class="bg-[#335c67] inline-block py-[] px-[5px] rounded-[5px] text-white">4,5</p>
+                        <div class="flex flex-row bg-[#335c67] inline-flex gap-[3px] py-[2px] px-[5px] rounded-[5px] text-white items-center">
+                            <img src="../image/star.png" alt="" class="w-[15px] h-[15px]">
+                            <p>4,5</p>
+                        </div>
                         <div class="flex flex-row items-center justify-between mt-[10px]">
                             <div class="leading-tight">
                                 <p class="text-[18px] font-semibold">Harga</p>
-                                <p class="text-[#335c67] font-semibold">1.000.000</p>
+                                <p class="text-[#b0323a] font-semibold">1.000.000</p>
                             </div>
                             <div>
-                                <a href="">
+                                <a href="../design/detail_kmr.php">
                                     <p class="bg-[#335c67] py-[5px] inline-block px-[10px] hover:scale-105 transition-all duration-200 rounded-[7px] text-white">Lihat detail</p>
                                 </a>
                             </div>
@@ -306,14 +349,17 @@
                             <img src="../image/loca2.png" alt="" class="w-[15px] h-[15px]">
                             <p>Alamat</p>
                         </div>
-                        <p class="bg-[#335c67] inline-block py-[] px-[5px] rounded-[5px] text-white">4,5</p>
+                        <div class="flex flex-row bg-[#335c67] inline-flex gap-[3px] py-[2px] px-[5px] rounded-[5px] text-white items-center">
+                            <img src="../image/star.png" alt="" class="w-[15px] h-[15px]">
+                            <p>4,5</p>
+                        </div>
                         <div class="flex flex-row items-center justify-between mt-[10px]">
                             <div class="leading-tight">
                                 <p class="text-[18px] font-semibold">Harga</p>
-                                <p class="text-[#335c67] font-semibold">1.000.000</p>
+                                <p class="text-[#b0323a] font-semibold">1.000.000</p>
                             </div>
                             <div>
-                                <a href="">
+                                <a href="../design/detail_kmr.php">
                                     <p class="bg-[#335c67] py-[5px] inline-block px-[10px] hover:scale-105 transition-all duration-200 rounded-[7px] text-white">Lihat detail</p>
                                 </a>
                             </div>
@@ -330,14 +376,17 @@
                             <img src="../image/loca2.png" alt="" class="w-[15px] h-[15px]">
                             <p>Alamat</p>
                         </div>
-                        <p class="bg-[#335c67] inline-block py-[] px-[5px] rounded-[5px] text-white">4,5</p>
+                        <div class="flex flex-row bg-[#335c67] inline-flex gap-[3px] py-[2px] px-[5px] rounded-[5px] text-white items-center">
+                            <img src="../image/star.png" alt="" class="w-[15px] h-[15px]">
+                            <p>4,5</p>
+                        </div>
                         <div class="flex flex-row items-center justify-between mt-[10px]">
                             <div class="leading-tight">
                                 <p class="text-[18px] font-semibold">Harga</p>
-                                <p class="text-[#335c67] font-semibold">1.000.000</p>
+                                <p class="text-[#b0323a] font-semibold">1.000.000</p>
                             </div>
                             <div>
-                                <a href="">
+                                <a href="../design/detail_kmr.php">
                                     <p class="bg-[#335c67] py-[5px] inline-block px-[10px] hover:scale-105 transition-all duration-200 rounded-[7px] text-white">Lihat detail</p>
                                 </a>
                             </div>
@@ -354,21 +403,24 @@
                             <img src="../image/loca2.png" alt="" class="w-[15px] h-[15px]">
                             <p>Alamat</p>
                         </div>
-                        <p class="bg-[#335c67] inline-block py-[] px-[5px] rounded-[5px] text-white">4,5</p>
+                        <div class="flex flex-row bg-[#335c67] inline-flex gap-[3px] py-[2px] px-[5px] rounded-[5px] text-white items-center">
+                            <img src="../image/star.png" alt="" class="w-[15px] h-[15px]">
+                            <p>4,5</p>
+                        </div>
                         <div class="flex flex-row items-center justify-between mt-[10px]">
                             <div class="leading-tight">
                                 <p class="text-[18px] font-semibold">Harga</p>
-                                <p class="text-[#335c67] font-semibold">1.000.000</p>
+                                <p class="text-[#b0323a] font-semibold">1.000.000</p>
                             </div>
                             <div>
-                                <a href="">
+                                <a href="../design/detail_kmr.php">
                                     <p class="bg-[#335c67] py-[5px] inline-block px-[10px] hover:scale-105 transition-all duration-200 rounded-[7px] text-white">Lihat detail</p>
                                 </a>
                             </div>
                         </div>
                     </div>
                 </div>
-              
+
 
 
             </div>
@@ -388,12 +440,22 @@
                     <p class="text-[20px] font-semibold">Tentang kami</p>
                     <p>Hotel kami menawarkan pengalaman menginap yang tidak akan terlupakan dengan fasilitas yang mewah dan pelayanan yang terbaik</p>
                 </div>
-                <div class="flex-1">
+                <div class="flex flex-col flex-1 gap-[4px]">
                     <p class="text-[20px] font-semibold">Hubungi kami</p>
-                    <p>Jl. Sudirman No. 123
-                        Jakarta Pusat, 10110</p>
-                    <p>+6289483948</p>
-                    <p>lumine@gmail.com</p>
+                    <div class="flex flex-row gap-[5px] items-center">
+                        <img src="../image/placeholder.png" alt="" class="w-[20px] h-[20px]">
+                        <p class="italic">Jl. depok kecamatan bogor kota makasar</p>
+                    </div>
+
+                    <div class="flex flex-row gap-[5px] items-center">
+                        <img src="../image/phone-call.png" alt="" class="w-[20px] h-[20px]">
+                        <p>+6289483948</p>
+                    </div>
+                    <div class="flex flex-row gap-[5px] items-center">
+                        <img src="../image/gmail.png" alt="" class="w-[20px] h-[20px]">
+                        <p>lumine@gmail.com</p>
+                    </div>
+
                 </div>
             </div>
             <hr class="border-[#4D8791]">
@@ -407,14 +469,117 @@
         </div>
     </footer>
 
-    <!-- script buat aos animasi -->
+    <!-- ini bagian buat login ama regis -->
+    <div id="modal" class="hidden fixed inset-0 bg-black/50 flex justify-center items-center z-50">
+        <div class="bg-white rounded-xl shadow-2xl w-[400px] p-6 relative">
+
+
+            <button id="closeModal" class="absolute top-3 right-3 text-gray-500 hover:text-black text-xl font-bold">&times;</button>
+
+            <!-- form loging-->
+            <div id="loginForm" class="">
+                <h2 class="text-2xl font-bold mb-4 text-center">Login</h2>
+                <form action="">
+                    <input type="email" placeholder="Email" class="border w-full p-2 rounded mb-3">
+                    <input type="password" placeholder="Kata sandi" class="border w-full p-2 rounded mb-3">
+                    <button class="bg-[#335c67] text-white w-full py-2 rounded hover:opacity-90">Masuk</button>
+                </form>
+                <p class="text-sm text-center mt-4">
+                    Belum punya akun?
+                    <button id="showRegister" class="text-[#335c67] font-semibold hover:underline">Daftar</button>
+                </p>
+            </div>
+
+            <!-- form regis -->
+            <div id="registerForm" class="hidden">
+                <h2 class="text-2xl font-bold mb-4 text-center">Daftar</h2>
+                <form action="">
+                    <input type="text" placeholder="Nama lengkap" class="border w-full p-2 rounded mb-3">
+                    <input type="email" placeholder="Email" class="border w-full p-2 rounded mb-3">
+                    <input type="password" placeholder="Kata sandi" class="border w-full p-2 rounded mb-3">
+                    <input type="file" placeholder="Foto profile" class="border w-full p-2 rounded mb-3">
+                    <button class="bg-[#335c67] text-white w-full py-2 rounded hover:opacity-90">Daftar</button>
+                </form>
+                <p class="text-sm text-center mt-4">
+                    Sudah punya akun?
+                    <button id="showLogin" class="text-[#335c67] font-semibold hover:underline">Masuk</button>
+                </p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- script buat animasi, modal login regis sama slider-->
+    <!-- inni buat animasi sama modal yg login regis-->
     <script>
         AOS.init({
             duration: 900,
             once: false,
             offset: 100
         });
+
+        const modal = document.getElementById('modal');
+        const openLogin = document.getElementById('openLogin');
+        const closeModal = document.getElementById('closeModal');
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const showRegister = document.getElementById('showRegister');
+        const showLogin = document.getElementById('showLogin');
+
+        openLogin.onclick = () => modal.classList.remove('hidden');
+        closeModal.onclick = () => modal.classList.add('hidden');
+        showRegister.onclick = () => {
+            loginForm.classList.add('hidden');
+            registerForm.classList.remove('hidden');
+        };
+        showLogin.onclick = () => {
+            registerForm.classList.add('hidden');
+            loginForm.classList.remove('hidden');
+        };
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.add('hidden');
+            }
+        });
     </script>
+
+    <!-- ini buat slider yg di rekomendasi kamarr -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+        const swiper = new Swiper(".swiper", {
+            slidesPerView: 4,
+            spaceBetween: 20,
+            grabCursor: true,
+            keyboard: {
+                enabled: true,
+            },
+            mousewheel: {
+                forceToAxis: true, // biar bisa scroll horizontal
+            },
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+            breakpoints: {
+                320: {
+                    slidesPerView: 1.2
+                },
+                640: {
+                    slidesPerView: 2
+                },
+                1024: {
+                    slidesPerView: 3
+                },
+                1280: {
+                    slidesPerView: 4
+                },
+            },
+        });
+    </script>
+
+
+
 </body>
 
 </html>
