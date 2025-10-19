@@ -1,3 +1,17 @@
+<?php
+session_start();
+$isLoggedIn = isset($_SESSION['user']);
+
+require_once '../act/db.php';
+$database = new Database();
+$conn = $database->getConnection();
+
+// ambil data buat seluruh kamar
+$kamar = "SELECT * FROM kamar";
+$hasil_kamar = mysqli_query($conn, $kamar);
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,26 +21,76 @@
     <link rel="icon" type="image/png" href="../image/logobener.png" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        ::-webkit-scrollbar {
+            height: 6px;
+            width: 7px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 9999px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #999;
+        }
+    </style>
     <title>Detail kamar</title>
 </head>
 
 <body>
     <!-- ini nabbar -->
     <nav id="navbar" class=" fixed top-0 left-0 w-full z-[50]  bg-[#234046]/60 backdrop-blur-md transition-all duration-300 ">
-        <a href="../design/home.php">
-            <div class="flex flex-row  px-[50px] py-[20px] items-center justify-between">
+        <div class="flex flex-row  px-[50px] py-[20px] items-center justify-between">
+            <a href="../design/home.php">
                 <div class="flex flex-row text-center items-center gap-[5px] ">
                     <img src="../image/logobener.png" alt="" class="w-[45px]">
                     <p class="font-semibold text-white text-[19px]">LUMINE <span class="font-bold text-[#e09f3e]">HOTEL</span> </p>
                 </div>
+            </a>
 
+            <?php if ($isLoggedIn): ?>
+                <!-- Kalo udah login -->
+                <div class="relative inline-block cursor-pointer">
+                    <div id="dropdownButton" class="flex flex-row gap-[5px] items-center">
+                        <img src="../upload/<?= htmlspecialchars($_SESSION['user']['foto'] ?? 'user.png'); ?>"
+                            alt="Profile"
+                            class="w-[35px] h-[35px] rounded-full object-cover border border-white">
+                        <p id="nama" class="text-white font-semibold">
+                            <?= htmlspecialchars($_SESSION['user']['nama']); ?>
+                        </p>
+                    </div>
+
+                    <!-- Dropdown Menu -->
+                    <div id="dropdownMenu"
+                        class="hidden absolute right-0 mt-2 w-48 bg-[#963f2e] shadow-lg rounded-lg border border-gray-200 transition-all duration-200 z-50">
+                        <ul class="py-1 text-white">
+                            <li>
+                                <a href="../act/logout.php" class="block px-4 py-2 hover:bg-[#C56B5B] rounded">
+                                    LOG OUT
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            <?php else: ?>
+                <!-- Kalo belum login -->
                 <div>
                     <button id="openLogin">
-                        <p class="bg-[#335c67] px-[15px] py-[8px] rounded-[30px] hover:scale-105 transition-all duration-200 text-white">Gabung | Daftar</p>
+                        <p class="bg-[#335c67] px-[15px] py-[8px] rounded-[30px] hover:scale-105 transition-all duration-200 text-white">
+                            Gabung | Daftar
+                        </p>
                     </button>
                 </div>
-            </div>
-        </a>
+            <?php endif; ?>
+        </div>
+
     </nav>
 
     <!-- ini foto kamar -->
@@ -53,24 +117,25 @@
     <section class="px-[50px] mt-[20px] ">
         <div class="flex flex-row gap-[20px]">
             <div class="w-2/3">
+                <?php $row = mysqli_fetch_assoc($hasil_kamar) ?>
                 <div class="flex flex-row justify-between items-center">
                     <div class="leading-tight">
                         <p class="bg-[#caedb8] inline-block px-[5px] rounded-[5px] py-[3px]">Tersedia</p>
-                        <p class="text-[30px] font-semibold">Lumine tanjung barat</p>
+                        <p class="text-[30px] font-semibold"> <?= htmlspecialchars($row['nama_kamar']); ?></p>
                     </div>
-                    <p class="text-[30px] font-semibold text-[#b0323a]">Rp.100.000</p>
+                    <p class="text-[30px] font-semibold text-[#b0323a]">Rp.<?= number_format($row['harga'], 0, ',', '.'); ?></p>
                 </div>
-                <p class="text-[16px] text-[#6B7280]">Jalan Taman Daan Mogot Raya V No.5 Tanjung Duren Utara, Grogol petamburan RT.3, RW.1, Tj. Duren Utara, Grogol Petamburan, Indonesia, 10110</p>
+                <p class="text-[16px] text-[#6B7280]"><?= htmlspecialchars($row['alamat']); ?></p>
                 <div class="flex flex-row gap-[20px] mt-[10px]">
                     <div class="w-2/3">
                         <p class="mt-[5px] text-[19px] font-semibold">Deskripsi kamar</p>
                         <div class="flex flex-row justify-between">
                             <p>Tipe kamar</p>
-                            <p class="text-[16px] font-semibold">Deluxe</p>
+                            <p class="text-[16px] font-semibold"><?= htmlspecialchars($row['tipe_kamar']); ?></p>
                         </div>
                         <div class="flex flex-row justify-between">
                             <p>Kapasitas</p>
-                            <p class="text-[16px] font-semibold">2 Orang</p>
+                            <p class="text-[16px] font-semibold"><?= htmlspecialchars($row['kapasitas']); ?></p>
                         </div>
                     </div>
                     <div class="w-2/3">
@@ -123,6 +188,7 @@
                                 <p class="text-[14px]">Kamar ini sangat bagus dan pelayanan yang sangat ramah</p>
                             </div>
                         </div>
+                        <?php  ?>
 
                     </div>
                 </div>
@@ -167,7 +233,16 @@
                                 </div>
 
 
-                            <button class="text-center justify-center items-center text-white font-semibold bg-[#56694f] py-[5px] rounded-[10px] w-full hover:scale-103 hover:bg-[#6E8667] transition-all duration-200"> <a href="../design/pembayaran.php">Pesan sekarang</a></button>   
+                                <?php if ($isLoggedIn): ?>
+                                    <button class="text-center justify-center items-center text-white font-semibold bg-[#56694f] py-[5px] rounded-[10px] w-full hover:scale-103 hover:bg-[#6E8667] transition-all duration-200">
+                                        <a href="../design/pembayaran.php">Pesan sekarang</a>
+                                    </button>
+                                <?php else: ?>
+                                    <button type="submit" id="btnpesan" class="text-center justify-center items-center text-white font-semibold bg-gray-500 py-[5px] rounded-[10px] w-full cursor-not-allowed">
+                                        Pesan sekarang
+                                    </button>
+                                <?php endif; ?>
+
                             </div>
                         </div>
                     </form>
@@ -182,161 +257,40 @@
         <div class="swiper">
             <div class="swiper-wrapper flex flex-row gap-[10px] pb-[15px]  whitespace-nowrap max-w-full ">
 
-                <div class="swiper-slide min-w-[280px]  shadow-[0_0px_25px_rgba(0,0,0,0.2)] rounded-[10px]  inline-block ">
-                    <a href="">
-                        <div>
-                            <img src="../image/h1.png" alt="" class="rounded-t-[10px]">
-                        </div>
-                        <div>
-                            <div class="p-[10px]">
-                                <p class="text-[23px] font-semibold">Luxury hotel</p>
-                                <div class="flex flex-row gap-[3px] items-center">
-                                    <img src="../image/loca2.png" alt="" class="w-[15px] h-[15px]">
-                                    <p>bali</p>
-                                </div>
-                                <div class="flex flex-row bg-[#335c67] inline-flex gap-[3px] py-[2px] px-[5px] rounded-[5px] text-white items-center">
-                                    <img src="../image/star.png" alt="" class="w-[15px] h-[15px]">
-                                    <p>4,5</p>
-                                </div>
-                                <div class="flex flex-row items-center justify-between mt-[10px]">
-                                    <div class="leading-tight">
-                                        <p class="text-[18px] font-semibold">Harga</p>
-                                        <p class="text-[#b0323a] font-semibold">1.000.000</p>
+                <?php while ($row = mysqli_fetch_assoc($hasil_kamar)): ?>
+                    <div class="swiper-slide min-w-[280px]  shadow-[0_0px_25px_rgba(0,0,0,0.2)] rounded-[10px]  inline-block ">
+                        <a href="">
+                            <div>
+                                <img src="../<?= htmlspecialchars($row['foto']); ?>" alt="" class="rounded-t-[10px] w-[300px] h-[200px]">
+                            </div>
+                            <div>
+                                <div class="p-[10px]">
+                                    <p class="text-[23px] font-semibold"> <?= htmlspecialchars($row['nama_kamar']); ?></p>
+                                    <div class="flex flex-row gap-[3px] items-center">
+                                        <img src="../image/loca2.png" alt="" class="w-[15px] h-[15px]">
+                                        <p><?= htmlspecialchars($row['tipe_kamar']); ?></p>
                                     </div>
-                                    <div>
-                                        <a href="../design/detail_kmr.php">
-                                            <p class="bg-[#335c67] py-[5px] inline-block px-[10px] hover:scale-105 transition-all duration-200 rounded-[7px] text-white">Lihat detail</p>
-                                        </a>
+                                    <div class="flex flex-row bg-[#335c67] inline-flex gap-[3px] py-[2px] px-[5px] rounded-[5px] text-white items-center">
+                                        <img src="../image/star.png" alt="" class="w-[15px] h-[15px]">
+                                        <p>4,5</p>
+                                    </div>
+                                    <div class="flex flex-row items-center justify-between mt-[10px]">
+                                        <div class="leading-tight">
+                                            <p class="text-[18px] font-semibold">Harga</p>
+                                            <p class="text-[#b0323a] font-semibold"> Rp.<?= number_format($row['harga'], 0, ',', '.'); ?></p>
+                                        </div>
+                                        <div>
+                                            <a href="../design/detail_kmr.php?id=<?= $row['kamar_id']; ?>">
+                                                <p class="bg-[#335c67] py-[5px] inline-block px-[10px] hover:scale-105 transition-all duration-200 rounded-[7px] text-white">Lihat detail</p>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="swiper-slide min-w-[280px]  shadow-[0_0px_25px_rgba(0,0,0,0.2)] rounded-[10px]  inline-block ">
-                    <a href="">
-                        <div>
-                            <img src="../image/h1.png" alt="" class="rounded-t-[10px]">
-                        </div>
-                        <div>
-                            <div class="p-[10px]">
-                                <p class="text-[23px] font-semibold">Luxury hotel</p>
-                                <div class="flex flex-row gap-[3px] items-center">
-                                    <img src="../image/loca2.png" alt="" class="w-[15px] h-[15px]">
-                                    <p>bali</p>
-                                </div>
-                                <div class="flex flex-row bg-[#335c67] inline-flex gap-[3px] py-[2px] px-[5px] rounded-[5px] text-white items-center">
-                                    <img src="../image/star.png" alt="" class="w-[15px] h-[15px]">
-                                    <p>4,5</p>
-                                </div>
-                                <div class="flex flex-row items-center justify-between mt-[10px]">
-                                    <div class="leading-tight">
-                                        <p class="text-[18px] font-semibold">Harga</p>
-                                        <p class="text-[#b0323a] font-semibold">1.000.000</p>
-                                    </div>
-                                    <div>
-                                        <a href="../design/detail_kmr.php">
-                                            <p class="bg-[#335c67] py-[5px] inline-block px-[10px] hover:scale-105 transition-all duration-200 rounded-[7px] text-white">Lihat detail</p>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="swiper-slide min-w-[280px]  shadow-[0_0px_25px_rgba(0,0,0,0.2)] rounded-[10px]  inline-block ">
-                    <a href="">
-                        <div>
-                            <img src="../image/h1.png" alt="" class="rounded-t-[10px]">
-                        </div>
-                        <div>
-                            <div class="p-[10px]">
-                                <p class="text-[23px] font-semibold">Luxury hotel</p>
-                                <div class="flex flex-row gap-[3px] items-center">
-                                    <img src="../image/loca2.png" alt="" class="w-[15px] h-[15px]">
-                                    <p>bali</p>
-                                </div>
-                                <div class="flex flex-row bg-[#335c67] inline-flex gap-[3px] py-[2px] px-[5px] rounded-[5px] text-white items-center">
-                                    <img src="../image/star.png" alt="" class="w-[15px] h-[15px]">
-                                    <p>4,5</p>
-                                </div>
-                                <div class="flex flex-row items-center justify-between mt-[10px]">
-                                    <div class="leading-tight">
-                                        <p class="text-[18px] font-semibold">Harga</p>
-                                        <p class="text-[#b0323a] font-semibold">1.000.000</p>
-                                    </div>
-                                    <div>
-                                        <a href="../design/detail_kmr.php">
-                                            <p class="bg-[#335c67] py-[5px] inline-block px-[10px] hover:scale-105 transition-all duration-200 rounded-[7px] text-white">Lihat detail</p>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="swiper-slide min-w-[280px]  shadow-[0_0px_25px_rgba(0,0,0,0.2)] rounded-[10px]  inline-block ">
-                    <a href="">
-                        <div>
-                            <img src="../image/h1.png" alt="" class="rounded-t-[10px]">
-                        </div>
-                        <div>
-                            <div class="p-[10px]">
-                                <p class="text-[23px] font-semibold">Luxury hotel</p>
-                                <div class="flex flex-row gap-[3px] items-center">
-                                    <img src="../image/loca2.png" alt="" class="w-[15px] h-[15px]">
-                                    <p>bali</p>
-                                </div>
-                                <div class="flex flex-row bg-[#335c67] inline-flex gap-[3px] py-[2px] px-[5px] rounded-[5px] text-white items-center">
-                                    <img src="../image/star.png" alt="" class="w-[15px] h-[15px]">
-                                    <p>4,5</p>
-                                </div>
-                                <div class="flex flex-row items-center justify-between mt-[10px]">
-                                    <div class="leading-tight">
-                                        <p class="text-[18px] font-semibold">Harga</p>
-                                        <p class="text-[#b0323a] font-semibold">1.000.000</p>
-                                    </div>
-                                    <div>
-                                        <a href="../design/detail_kmr.php">
-                                            <p class="bg-[#335c67] py-[5px] inline-block px-[10px] hover:scale-105 transition-all duration-200 rounded-[7px] text-white">Lihat detail</p>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="swiper-slide min-w-[280px]  shadow-[0_0px_25px_rgba(0,0,0,0.2)] rounded-[10px]  inline-block ">
-                    <a href="">
-                        <div>
-                            <img src="../image/h1.png" alt="" class="rounded-t-[10px]">
-                        </div>
-                        <div>
-                            <div class="p-[10px]">
-                                <p class="text-[23px] font-semibold">Luxury hotel</p>
-                                <div class="flex flex-row gap-[3px] items-center">
-                                    <img src="../image/loca2.png" alt="" class="w-[15px] h-[15px]">
-                                    <p>bali</p>
-                                </div>
-                                <div class="flex flex-row bg-[#335c67] inline-flex gap-[3px] py-[2px] px-[5px] rounded-[5px] text-white items-center">
-                                    <img src="../image/star.png" alt="" class="w-[15px] h-[15px]">
-                                    <p>4,5</p>
-                                </div>
-                                <div class="flex flex-row items-center justify-between mt-[10px]">
-                                    <div class="leading-tight">
-                                        <p class="text-[18px] font-semibold">Harga</p>
-                                        <p class="text-[#b0323a] font-semibold">1.000.000</p>
-                                    </div>
-                                    <div>
-                                        <a href="../design/detail_kmr.php">
-                                            <p class="bg-[#335c67] py-[5px] inline-block px-[10px] hover:scale-105 transition-all duration-200 rounded-[7px] text-white">Lihat detail</p>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
+                        </a>
+                    </div>
+                <?php endwhile; ?>
+
 
 
             </div>
@@ -390,8 +344,6 @@
 
 
 
-
-
     <!-- modal foto -->
     <div id="modal" class="hidden fixed inset-0 bg-black/50 flex justify-center items-center z-50">
         <div class=" rounded-xl shadow-2xl w-[700px] relative">
@@ -414,32 +366,110 @@
         </div>
     </div>
 
+    <!-- modal login regis -->
+    <div id="modalLogin" class="hidden fixed inset-0 bg-black/50 flex justify-center items-center z-50">
+        <div class="bg-white rounded-xl shadow-2xl w-[400px] p-6 relative">
+            <button id="closeModalLogin" class="absolute top-3 right-3 text-gray-500 hover:text-black text-xl font-bold">&times;</button>
+
+            <div id="loginForm">
+                <h2 class="text-2xl font-bold mb-4 text-center">Login</h2>
+                <form action="../act/act_login.php" method="POST">
+                    <input type="email" name="email" placeholder="Email" class="border w-full p-2 rounded mb-3">
+                    <input type="password" name="password" placeholder="Kata sandi" class="border w-full p-2 rounded mb-3">
+                    <button class="bg-[#335c67] text-white w-full py-2 rounded hover:opacity-90">Masuk</button>
+                </form>
+                <p class="text-sm text-center mt-4">
+                    Belum punya akun?
+                    <button id="showRegister" class="text-[#335c67] font-semibold hover:underline">Daftar</button>
+                </p>
+            </div>
+
+            <div id="registerForm" class="hidden">
+                <h2 class="text-2xl font-bold mb-4 text-center">Daftar</h2>
+                <form action="../act/act_regis.php" method="POST" enctype="multipart/form-data">
+                    <input type="text" name="nama" placeholder="Nama lengkap" class="border w-full p-2 rounded mb-3">
+                    <input type="email" name="email" placeholder="Email" class="border w-full p-2 rounded mb-3">
+                    <input type="password" name="password" placeholder="Kata sandi" class="border w-full p-2 rounded mb-3">
+                    <input type="file" name="foto" placeholder="Foto profile" class="border w-full p-2 rounded mb-3">
+                    <button type="submit" class="bg-[#335c67] text-white w-full py-2 rounded hover:opacity-90">Daftar</button>
+                </form>
+                <p class="text-sm text-center mt-4">
+                    Sudah punya akun?
+                    <button id="showLogin" class="text-[#335c67] font-semibold hover:underline">Masuk</button>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- script modal login regis -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const modalLogin = document.getElementById('modalLogin');
+            const openLogin = document.getElementById('openLogin');
+            const closeModalLogin = document.getElementById('closeModalLogin');
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            const showRegister = document.getElementById('showRegister');
+            const showLogin = document.getElementById('showLogin');
+
+            if (openLogin) {
+                openLogin.addEventListener('click', () => {
+                    modalLogin.classList.remove('hidden');
+                    modalLogin.classList.add('flex', 'animate-fadeIn');
+                });
+            }
+
+            if (closeModalLogin) {
+                closeModalLogin.addEventListener('click', () => {
+                    modalLogin.classList.add('hidden');
+                    modalLogin.classList.remove('animate-fadeIn');
+                });
+            }
+
+            if (showRegister && showLogin) {
+                showRegister.addEventListener('click', () => {
+                    loginForm.classList.add('hidden');
+                    registerForm.classList.remove('hidden');
+                });
+
+                showLogin.addEventListener('click', () => {
+                    registerForm.classList.add('hidden');
+                    loginForm.classList.remove('hidden');
+                });
+            }
+
+            modalLogin.addEventListener('click', (e) => {
+                if (e.target === modalLogin) {
+                    modalLogin.classList.add('hidden');
+                    modalLogin.classList.remove('animate-fadeIn');
+                }
+            });
+        });
+    </script>
+
     <!-- ini script buat yg modal foto -->
     <script>
         const modal = document.getElementById('modal');
         const openbuttons = document.querySelectorAll('.openbutton');
         const closeModal = document.getElementById('closeModal');
-
-        // biar semua gambar bisa buka modal
         openbuttons.forEach(btn => {
             btn.addEventListener('click', () => {
                 modal.classList.remove('hidden');
             });
-        });
+            closeModal.onclick = () => modal.classList.add('hidden');
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.add('hidden');
+                }
+            });
 
-        // tombol close
-        closeModal.onclick = () => modal.classList.add('hidden');
-
-        // klik di luar modal nutup
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                modal.classList.add('hidden');
-            }
         });
     </script>
 
+    <!-- ainmasi navbar -->
     <script>
         const navbar = document.getElementById('navbar');
+        const nama = document.getElementById('nama');
         navbar.classList.add('shadow-2xl');
 
 
@@ -448,10 +478,12 @@
                 // pas discroll
                 navbar.classList.add('bg-black/10');
                 navbar.classList.remove('bg-#234046/60');
+                nama.style.color = '#335c67';
             } else {
                 // pas di atas
                 navbar.classList.add('bg-#234046/60');
                 navbar.classList.remove('bg-black/10');
+                nama.style.color = '#ffffff';
             }
         });
     </script>
@@ -487,6 +519,67 @@
                     slidesPerView: 4
                 },
             },
+        });
+    </script>
+
+    <!-- ini buat dropdown -->
+    <script>
+        const btn = document.getElementById('dropdownButton');
+        const menu = document.getElementById('dropdownMenu');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        // biar nutup kalo klik di luar dropdown
+        document.addEventListener('click', (e) => {
+            if (!btn.contains(e.target) && !menu.contains(e.target)) {
+                menu.classList.add('hidden');
+            }
+        });
+
+        const modalLogin = document.getElementById('modalLogin');
+        const openLogin = document.getElementById('openLogin');
+        const closeModalLogin = document.getElementById('closeModalLogin');
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const showRegister = document.getElementById('showRegister');
+        const showLogin = document.getElementById('showLogin');
+
+        openLogin.onclick = () => modalLogin.classList.remove('hidden');
+        closeModalLogin.onclick = () => modalLogin.classList.add('hidden');
+
+        showRegister.onclick = () => {
+            loginForm.classList.add('hidden');
+            registerForm.classList.remove('hidden');
+        };
+
+        showLogin.onclick = () => {
+            registerForm.classList.add('hidden');
+            loginForm.classList.remove('hidden');
+        };
+
+        modalLogin.addEventListener('click', (e) => {
+            if (e.target === modalLogin) {
+                modalLogin.classList.add('hidden');
+            }
+        });
+    </script>
+
+    <!-- buat alert yg pesan -->
+    <script>
+        document.getElementById("btnpesan").addEventListener("click", function(e) {
+            e.preventDefault(); // cegah submit langsung
+
+            const form = e.target.closest("form");
+
+            // cek validasi HTML bawaan
+            if (!form.checkValidity()) {
+                form.reportValidity(); // munculkan pesan bawaan browser
+                return; // hentikan proses kalau belum valid
+            }
+
+            Swal.fire("Login terlebih dahulu!");;
         });
     </script>
 
