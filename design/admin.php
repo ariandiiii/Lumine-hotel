@@ -30,6 +30,7 @@ $enumValues = explode("','", $matches[1]);
         <input type="number" name="harga" placeholder="harga" required class="border">
         <input type="text" name="kapasitas" placeholder="kapasitas" required class="border">
         <input type="text" name="fasilitas" placeholder="fasilitas" required class="border">
+        <input type="text" name="rating" placeholder="rating" required class="border">
 
         <label for="status">Status Kamar:</label>
         <select name="status" id="status" required class="border">
@@ -55,6 +56,7 @@ $enumValues = explode("','", $matches[1]);
             <th>Kapasitas</th>
             <th>Fasilitas</th>
             <th>Status</th>
+            <th>rating</th>
             <th>Foto</th>
             <th>Aksi</th>
         </tr>
@@ -71,6 +73,7 @@ $enumValues = explode("','", $matches[1]);
                 echo "<td>{$row['kapasitas']}</td>";
                 echo "<td>{$row['fasilitas']}</td>";
                 echo "<td>{$row['status']}</td>";
+                echo "<td>{$row['rating']}</td>";
                 echo "<td>";
                 if (!empty($row['foto'])) {
                     echo "<img src='../{$row['foto']}' width='100'>";

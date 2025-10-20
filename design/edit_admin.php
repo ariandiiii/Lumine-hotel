@@ -28,6 +28,8 @@ $data = mysqli_fetch_assoc($q);
 
     <label>Fasilitas:</label><br>
     <input type="text" name="fasilitas" value="<?php echo $data['fasilitas']; ?>" required><br><br>
+    <label>Rating:</label><br>
+    <input type="text" name="rating" value="<?php echo $data['rating']; ?>" required><br><br>
 
     <label>Status:</label><br>
     <select name="status" required>
@@ -39,7 +41,7 @@ $data = mysqli_fetch_assoc($q);
     <img src="../<?php echo $data['foto']; ?>" width="200" style="border-radius:10px;"><br><br>
 
     <label>Ganti Foto (optional):</label><br>
-    <input type="file" name="foto[]" multiple accept="image/*" required class="border"><br><br>
+    <input type="file" name="foto[]" multiple accept="image/*"  class="border"><br><br>
 
     <button type="submit" name="update">Simpan Perubahan</button>
 </form>

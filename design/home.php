@@ -11,9 +11,8 @@ $query = "SELECT * FROM kamar ORDER BY harga ASC LIMIT 5";
 $result = mysqli_query($conn, $query);
 
 // ambil data buat seluruh kamar
-$kamar = "SELECT * FROM kamar";
+$kamar = "SELECT * FROM kamar ";
 $hasil_kamar = mysqli_query($conn, $kamar);
-
 
 ?>
 
@@ -134,42 +133,36 @@ $hasil_kamar = mysqli_query($conn, $kamar);
     </section>
 
     <!-- ini bagian rekomendasi kamar -->
-    <section class="px-[50px]  mt-[40px]" data-aos="fade-right">
+     <section class="px-[50px]  mt-[40px]" data-aos="fade-right">
         <p class="text-[24px] mb-[5px] font-semibold">Rekomendasi Kamar termurah</p>
         <div class="swiper">
             <div class="swiper-wrapper flex flex-row gap-[10px] pb-[15px]  whitespace-nowrap max-w-full ">
 
                 <?php while ($row = mysqli_fetch_assoc($result)): ?>
-                    <div class="swiper-slide min-w-[280px] shadow-[0_0px_25px_rgba(0,0,0,0.2)] rounded-[10px] inline-block ">
-                        <a href="../design/detail_kmr.php?id=<?= $row['kamar_id']; ?>">
+                    <div class="swiper-slide min-w-[280px]  shadow-[0_0px_25px_rgba(0,0,0,0.2)] rounded-[10px]  inline-block ">
+                        <a href="">
                             <div>
-                                <img src="../<?= htmlspecialchars($row['foto']); ?>" alt="<?= htmlspecialchars($row['nama_kamar']); ?>" class="rounded-t-[10px] w-[300px] h-[200px]">
+                                <img src="../<?= htmlspecialchars($row['foto']); ?>" alt="" class="rounded-t-[10px] w-[300px] h-[200px]">
                             </div>
                             <div>
                                 <div class="p-[10px]">
-                                    <p class="text-[23px] font-semibold">
-                                        <?= htmlspecialchars($row['nama_kamar']); ?>
-                                    </p>
+                                    <p class="text-[23px] font-semibold"> <?= htmlspecialchars($row['nama_kamar']); ?></p>
                                     <div class="flex flex-row gap-[3px] items-center">
-                                        <img src="../image/loca2.png" alt="" class="w-[15px] h-[15px]">
+                                        <!-- <img src="../image/loca2.png" alt="" class="w-[15px] h-[15px]"> -->
                                         <p><?= htmlspecialchars($row['tipe_kamar']); ?></p>
                                     </div>
                                     <div class="flex flex-row bg-[#335c67] inline-flex gap-[3px] py-[2px] px-[5px] rounded-[5px] text-white items-center">
                                         <img src="../image/star.png" alt="" class="w-[15px] h-[15px]">
-                                        <p>4,5</p>
+                                        <p><?= htmlspecialchars($row['rating']); ?></p>
                                     </div>
                                     <div class="flex flex-row items-center justify-between mt-[10px]">
                                         <div class="leading-tight">
                                             <p class="text-[18px] font-semibold">Harga</p>
-                                            <p class="text-[#b0323a] font-semibold">
-                                                Rp.<?= number_format($row['harga'], 0, ',', '.'); ?>
-                                            </p>
+                                            <p class="text-[#b0323a] font-semibold"> Rp.<?= number_format($row['harga'], 0, ',', '.'); ?></p>
                                         </div>
                                         <div>
                                             <a href="../design/detail_kmr.php?id=<?= $row['kamar_id']; ?>">
-                                                <p class="bg-[#335c67] py-[5px] inline-block px-[10px] hover:scale-105 transition-all duration-200 rounded-[7px] text-white">
-                                                    Lihat detail
-                                                </p>
+                                                <p class="bg-[#335c67] py-[5px] inline-block px-[10px] hover:scale-105 transition-all duration-200 rounded-[7px] text-white">Lihat detail</p>
                                             </a>
                                         </div>
                                     </div>
@@ -259,12 +252,12 @@ $hasil_kamar = mysqli_query($conn, $kamar);
                         <div class="min-w-[55%] p-[10px]">
                             <p class="text-[25px] font-semibold">  <?= htmlspecialchars($row['nama_kamar']); ?></p>
                             <div class="flex flex-row gap-[3px] items-center">
-                                <img src="../image/loca2.png" alt="" class="w-[15px] h-[15px]">
-                                <p>Alamat</p>
+                                <!-- <img src="../image/loca2.png" alt="" class="w-[15px] h-[15px]"> -->
+                                <p><?= htmlspecialchars($row['tipe_kamar']); ?></p>
                             </div>
                             <div class="flex flex-row bg-[#335c67] inline-flex gap-[3px] py-[2px] px-[5px] rounded-[5px] text-white items-center">
                                 <img src="../image/star.png" alt="" class="w-[15px] h-[15px]">
-                                <p>4,5</p>
+                                <p><?= htmlspecialchars($row['rating']); ?></p>
                             </div>
                             <div class="flex flex-row items-center justify-between mt-[10px]">
                                 <div class="leading-tight">

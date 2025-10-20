@@ -7,8 +7,66 @@ $database = new Database();
 $conn = $database->getConnection();
 
 // ambil data buat seluruh kamar
+// ambil id dari URL
+if (isset($_GET['id'])) {
+    $id_kamar = intval($_GET['id']); // amanin dari SQL Injection
+
+    $query = "SELECT * FROM kamar WHERE kamar_id = $id_kamar";
+    $hasil_kamar = mysqli_query($conn, $query);
+
+    if ($row = mysqli_fetch_assoc($hasil_kamar)) {
+        // $row sekarang berisi data kamar yang sesuai
+        $nama_kamar = $row['nama_kamar'];
+        $alamat = $row['alamat'];
+        $harga = $row['harga'];
+        $tipe_kamar = $row['tipe_kamar'];
+        $kapasitas = $row['kapasitas'];
+        $rating = $row['rating'];
+        $foto = $row['foto'];
+        // dll
+    } else {
+        echo "Kamar tidak ditemukan!";
+        exit;
+    }
+} else {
+    echo "ID kamar tidak ada!";
+    exit;
+}
+
+// buat tanggal otomatis yg pemesanan
+$checkin = $_POST['check_in'] ?? null;
+$checkout = $_POST['check_out'] ?? null;
+$jumlah_kamar = intval($_POST['jumlah_kamar'] ?? 0);
+$jumlah_tamu = intval($_POST['jumlah_tamu'] ?? 0);
+$total_harga = floatval($_POST['total'] ?? 0); // bisa hitung ulang di PHP juga
+$tanggal_buat = date('Y-m-d H:i:s'); // otomatis sekarang
+
+$user_id = $_SESSION['user']['id']; // ambil dari session
+$kamar_id = $id_kamar;
+
+$sql = "INSERT INTO pesan (user_id, kamar_id, check_in, check_out, jumlah_kamar, total_harga, tanggal_buat, jumlah_tamu)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+$stmt = $conn->prepare($sql);
+$stmt->bind_param(
+    "iissidsi",
+    $user_id,
+    $kamar_id,
+    $checkin,
+    $checkout,
+    $jumlah_kamar,
+    $total_harga,
+    $tanggal_buat,
+    $jumlah_tamu
+);
+$stmt->execute();
+
+
+
+// ambil data buat seluruh kamar
 $kamar = "SELECT * FROM kamar";
-$hasil_kamar = mysqli_query($conn, $kamar);
+$rekom_kamar = mysqli_query($conn, $kamar);
+
 ?>
 
 
@@ -117,43 +175,63 @@ $hasil_kamar = mysqli_query($conn, $kamar);
     <section class="px-[50px] mt-[20px] ">
         <div class="flex flex-row gap-[20px]">
             <div class="w-2/3">
-                <?php $row = mysqli_fetch_assoc($hasil_kamar) ?>
+
                 <div class="flex flex-row justify-between items-center">
                     <div class="leading-tight">
                         <p class="bg-[#caedb8] inline-block px-[5px] rounded-[5px] py-[3px]">Tersedia</p>
-                        <p class="text-[30px] font-semibold"> <?= htmlspecialchars($row['nama_kamar']); ?></p>
+                        <p class="text-[30px] font-semibold"> <?= htmlspecialchars($nama_kamar); ?></p>
                     </div>
-                    <p class="text-[30px] font-semibold text-[#b0323a]">Rp.<?= number_format($row['harga'], 0, ',', '.'); ?></p>
+                    <p class="text-[30px] font-semibold text-[#b0323a]">Rp.<?= number_format($harga, 0, ',', '.'); ?></p>
                 </div>
-                <p class="text-[16px] text-[#6B7280]"><?= htmlspecialchars($row['alamat']); ?></p>
+                <p class="text-[16px] text-[#6B7280]"><?= htmlspecialchars($alamat); ?></p>
                 <div class="flex flex-row gap-[20px] mt-[10px]">
                     <div class="w-2/3">
                         <p class="mt-[5px] text-[19px] font-semibold">Deskripsi kamar</p>
                         <div class="flex flex-row justify-between">
                             <p>Tipe kamar</p>
-                            <p class="text-[16px] font-semibold"><?= htmlspecialchars($row['tipe_kamar']); ?></p>
+                            <p class="text-[16px] font-semibold"><?= htmlspecialchars($tipe_kamar); ?></p>
                         </div>
                         <div class="flex flex-row justify-between">
                             <p>Kapasitas</p>
-                            <p class="text-[16px] font-semibold"><?= htmlspecialchars($row['kapasitas']); ?></p>
+                            <p class="text-[16px] font-semibold"><?= htmlspecialchars($kapasitas); ?></p>
                         </div>
                     </div>
                     <div class="w-2/3">
                         <p class="mt-[5px] text-[19px] font-semibold">Fasilitas kamar</p>
                         <div class="mt-[5px] flex flex-wrap gap-[9px]">
-                            <p class="border border-[#6B7280] px-[7px] rounded-[8px] font-semibold">AC</p>
-                            <p class="border border-[#6B7280] px-[7px] rounded-[8px] font-semibold">Tv</p>
-                            <p class="border border-[#6B7280] px-[7px] rounded-[8px] font-semibold">Wifi</p>
-                            <p class="border border-[#6B7280] px-[7px] rounded-[8px] font-semibold">Mini bar</p>
-                            <p class="border border-[#6B7280] px-[7px] rounded-[8px] font-semibold">Balkon</p>
+                            <?php
+                            // ambil fasilitas dari DB, pisahkan berdasarkan koma
+                            $fasilitas_array = explode(',', $row['fasilitas'] ?? $fasilitas);
+                            foreach ($fasilitas_array as $f) {
+                                echo '<p class="border border-[#6B7280] px-[7px] rounded-[8px] font-semibold">' . htmlspecialchars(trim($f)) . '</p>';
+                            }
+                            ?>
                         </div>
                     </div>
-                    <div class="w-1/3 flex flex-row justify-between items-center">
-                        <p class="text-[25px] bg-[#335c67] inline-block px-[10px] py-[5px] text-white rounded-[5px]">4.5 <span class="text-[15px]">/5</span> </p>
-                        <p class="text-[13px] leading-tight">Sangat baik</p>
+                    <div class="w-1/3 flex flex-row gap-[5px] items-center">
+                        <p class="text-[25px] bg-[#335c67] inline-block px-[10px] py-[5px] text-white rounded-[5px]"><?= htmlspecialchars($rating); ?> <span class="text-[15px]">/5</span> </p>
+                        <p class="text-[13px] leading-tight" style="<?php
+                                                                    if ($rating >= 4.0) {
+                                                                        echo 'font-size: 13px;'; // hijau dan tebel
+                                                                    } elseif ($rating >= 3.0) {
+                                                                        echo 'font-size: 18px;'; // kuning/orange
+                                                                    } else {
+                                                                        echo 'font-size: 18px;'; // merah
+                                                                    }
+                                                                    ?>"> <?php
+                                                                            if ($rating >= 4.0) {
+                                                                                echo "Sangat baik";
+                                                                            } elseif ($rating >= 3.0) {
+                                                                                echo "Baik";
+                                                                            } else {
+                                                                                echo "Jelek";
+                                                                            }
+                                                                            ?>
+                        </p>
                     </div>
                 </div>
 
+                <!-- ulasan -->
                 <div class="mt-[10px]">
                     <p class="text-[19px] font-semibold mb-[10px]">Ulasan kamar</p>
                     <div class="flex flex-wrap gap-[10px]">
@@ -188,7 +266,7 @@ $hasil_kamar = mysqli_query($conn, $kamar);
                                 <p class="text-[14px]">Kamar ini sangat bagus dan pelayanan yang sangat ramah</p>
                             </div>
                         </div>
-                        <?php  ?>
+
 
                     </div>
                 </div>
@@ -197,45 +275,48 @@ $hasil_kamar = mysqli_query($conn, $kamar);
             <!-- kotak pesan -->
             <div class="w-1/3">
                 <div class="border border-[#6B7280] p-[10px] rounded-[10px] sticky">
-                    <form action="">
+                    <form action="" method="POST">
                         <div class="flex flex-col gap-[5px]">
                             <div class="grid grid-cols-2 gap-[5px]">
                                 <div>
                                     <p>Check-in</p>
-                                    <input type="date" name="" id="" class="border border-[#6B7280] w-full w-full p-[5px] rounded-[10px]">
+                                    <input type="date" name="check_in" id="checkin" class="border border-[#6B7280] w-full w-full p-[5px] rounded-[10px]">
                                 </div>
                                 <div>
                                     <p>Check-out</p>
-                                    <input type="date" name="" id="" class="border border-[#6B7280] w-full w-full p-[5px] rounded-[10px]">
+                                    <input type="date" name="check_out" id="checkout" class="border border-[#6B7280] w-full w-full p-[5px] rounded-[10px]">
                                 </div>
                                 <div>
                                     <p>Kamar yang dipesan</p>
-                                    <input type="number" name="" id="" placeholder="0" class="border border-[#6B7280] w-full p-[5px] rounded-[10px]">
+                                    <input type="number" name="jumlah_kamar" id="jumlahKamar" placeholder="0" class="border border-[#6B7280] w-full p-[5px] rounded-[10px]">
                                 </div>
                                 <div>
                                     <p>Jumlah tamu</p>
-                                    <input type="number" name="" id="" placeholder="0" class="border border-[#6B7280] w-full p-[5px] rounded-[10px]">
+                                    <input type="number" name="jumlah_tamu" id="jumlah_tamu" placeholder="0" class="border border-[#6B7280] w-full p-[5px] rounded-[10px]">
                                 </div>
                             </div>
                             <div class="justify-center items-center text-center ">
                                 <div class="flex flex-row justify-between items-center ">
                                     <p class="text-[17px]">Harga permalam</p>
-                                    <p class="text-[17px] font-semibold">Rp.100.000</p>
+                                    <p class="text-[17px] font-semibold">Rp.<?= number_format($harga, 0, ',', '.'); ?></p>
                                 </div>
                                 <div class="flex flex-row justify-between items-center">
-                                    <p class="text-[15px]">1 malam x 2 kamar</p>
-                                    <p class="text-[15px] font-semibold">Rp.200.00</p>
+                                    <p class="text-[15px]" id="infoMalam">1 malam x 1 kamar</p>
+                                    <p class="text-[15px] font-semibold" id="subtotal">Rp.<?= number_format($harga, 0, ',', '.'); ?></p>
                                 </div>
                                 <hr class="border-[#6B7280]">
                                 <div class="flex flex-row justify-between items-center mb-[5px]">
                                     <p class="text-[17px]">Total</p>
-                                    <p class="text-[17px] font-semibold text-[#b0323a]">Rp.200.00</p>
+                                    <input type="hidden" name="total" id="totalInput">
+                                    <p class="text-[17px] font-semibold text-[#b0323a]" id="total">Rp.<?= number_format($harga, 0, ',', '.'); ?></p>
                                 </div>
 
 
+
                                 <?php if ($isLoggedIn): ?>
-                                    <button class="text-center justify-center items-center text-white font-semibold bg-[#56694f] py-[5px] rounded-[10px] w-full hover:scale-103 hover:bg-[#6E8667] transition-all duration-200">
-                                        <a href="../design/pembayaran.php">Pesan sekarang</a>
+                                    <button type="submit" class="text-center justify-center items-center text-white font-semibold bg-[#56694f] py-[5px] rounded-[10px] w-full hover:scale-103 hover:bg-[#6E8667] transition-all duration-200">
+                                        Pesan sekarang
+
                                     </button>
                                 <?php else: ?>
                                     <button type="submit" id="btnpesan" class="text-center justify-center items-center text-white font-semibold bg-gray-500 py-[5px] rounded-[10px] w-full cursor-not-allowed">
@@ -257,7 +338,7 @@ $hasil_kamar = mysqli_query($conn, $kamar);
         <div class="swiper">
             <div class="swiper-wrapper flex flex-row gap-[10px] pb-[15px]  whitespace-nowrap max-w-full ">
 
-                <?php while ($row = mysqli_fetch_assoc($hasil_kamar)): ?>
+                <?php while ($row = mysqli_fetch_assoc($rekom_kamar)): ?>
                     <div class="swiper-slide min-w-[280px]  shadow-[0_0px_25px_rgba(0,0,0,0.2)] rounded-[10px]  inline-block ">
                         <a href="">
                             <div>
@@ -267,7 +348,7 @@ $hasil_kamar = mysqli_query($conn, $kamar);
                                 <div class="p-[10px]">
                                     <p class="text-[23px] font-semibold"> <?= htmlspecialchars($row['nama_kamar']); ?></p>
                                     <div class="flex flex-row gap-[3px] items-center">
-                                        <img src="../image/loca2.png" alt="" class="w-[15px] h-[15px]">
+                                        <!-- <img src="../image/loca2.png" alt="" class="w-[15px] h-[15px]"> -->
                                         <p><?= htmlspecialchars($row['tipe_kamar']); ?></p>
                                     </div>
                                     <div class="flex flex-row bg-[#335c67] inline-flex gap-[3px] py-[2px] px-[5px] rounded-[5px] text-white items-center">
@@ -582,6 +663,44 @@ $hasil_kamar = mysqli_query($conn, $kamar);
             Swal.fire("Login terlebih dahulu!");;
         });
     </script>
+
+    <!-- ini buat ngitung yg jumlah permalam -->
+    <script>
+        const checkin = document.getElementById('checkin');
+        const checkout = document.getElementById('checkout');
+        const jumlahKamar = document.getElementById('jumlahKamar');
+        const infoMalam = document.getElementById('infoMalam');
+        const subtotal = document.getElementById('subtotal');
+        const total = document.getElementById('total');
+        const totalInput = document.getElementById('totalInput');
+
+        const hargaPerKamar = <?= $harga; ?>;
+
+        function updateHarga() {
+            const ci = new Date(checkin.value);
+            const co = new Date(checkout.value);
+            let malam = 1; // default 1 malam
+
+            if (checkin.value && checkout.value && co > ci) {
+                const diffTime = co - ci;
+                malam = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            }
+
+            const kamar = parseInt(jumlahKamar.value) || 1;
+            const sub = malam * kamar * hargaPerKamar;
+
+            infoMalam.textContent = `${malam} malam x ${kamar} kamar`;
+            subtotal.textContent = `Rp.${sub.toLocaleString('id-ID')}`;
+            total.textContent = `Rp.${sub.toLocaleString('id-ID')}`;
+            totalInput.value = sub; // ini penting biar dikirim ke PHP
+        }
+
+        // trigger tiap user ganti tanggal / jumlah kamar
+        checkin.addEventListener('change', updateHarga);
+        checkout.addEventListener('change', updateHarga);
+        jumlahKamar.addEventListener('input', updateHarga);
+    </script>
+
 
 
 </body>

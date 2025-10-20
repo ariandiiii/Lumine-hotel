@@ -10,6 +10,7 @@ if (isset($_POST['update'])) {
     $harga = $_POST['harga'];
     $kapasitas = $_POST['kapasitas'];
     $fasilitas = $_POST['fasilitas'];
+    $rating = $_POST['rating'];
     $status = $_POST['status'];
 
     // update data utama kamar (tanpa ubah foto dulu)
@@ -20,6 +21,7 @@ if (isset($_POST['update'])) {
             harga='$harga',
             kapasitas='$kapasitas',
             fasilitas='$fasilitas',
+            rating='$rating',
             status='$status'
         WHERE kamar_id='$id'
     ");
