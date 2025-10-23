@@ -2,7 +2,7 @@
 session_start();
 $isLoggedIn = isset($_SESSION['user']);
 
-require_once '../act/db.php';
+require_once 'act/db.php';
 $database = new Database();
 $conn = $database->getConnection();
 
@@ -23,7 +23,7 @@ $hasil_kamar = mysqli_query($conn, $kamar);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="../image/logobener.png" />
+    <link rel="icon" type="image/png" href="image/logobener.png" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
@@ -52,14 +52,14 @@ $hasil_kamar = mysqli_query($conn, $kamar);
 
 <body>
     <!-- ini bagian header navbar -->
-    <div class="relative bg-[url('../image/bg.jpg')] bg-cover bg-center pb-[90px] rounded-b-[50px]" data-aos="fade-in">
+    <div class="relative bg-[url('image/bg.jpg')] bg-cover bg-center pb-[90px] rounded-b-[50px]" data-aos="fade-in">
         <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-black/40 to-transparent"></div>
 
         <nav class="relative bg-gradient-to-b from-black to-transparent ">
-            <a href="../design/home.php">
+            <a href="index.php">
                 <div class="flex flex-row  px-[50px] py-[20px] items-center justify-between">
                     <div class="flex flex-row text-center items-center gap-[5px] ">
-                        <img src="../image/logobener.png" alt="" class="w-[45px]">
+                        <img src="image/logobener.png" alt="" class="w-[45px]">
                         <p class="font-semibold text-white text-[19px]">
                             LUMINE <span class="font-bold text-[#e09f3e]">HOTEL</span>
                         </p>
@@ -70,7 +70,7 @@ $hasil_kamar = mysqli_query($conn, $kamar);
                 <!-- Kalo udah login -->
                 <div class="relative inline-block cursor-pointer">
                     <div id="dropdownButton" class="flex flex-row gap-[5px] items-center">
-                        <img src="../upload/<?= htmlspecialchars($_SESSION['user']['foto'] ?? 'user.png'); ?>"
+                        <img src="upload/<?= htmlspecialchars($_SESSION['user']['foto'] ?? 'user.png'); ?>"
                             alt="Profile"
                             class="w-[35px] h-[35px] rounded-full object-cover border border-white">
                         <p class="text-white font-semibold">
@@ -83,7 +83,7 @@ $hasil_kamar = mysqli_query($conn, $kamar);
                         class="hidden absolute right-0 mt-2 w-48 bg-[#963f2e] shadow-lg rounded-lg border border-gray-200 transition-all duration-200 z-50">
                         <ul class="py-1 text-white">
                             <li>
-                                <a href="../act/logout.php" class="block px-4 py-2 hover:bg-[#C56B5B] rounded">
+                                <a href="act/logout.php" class="block px-4 py-2 hover:bg-[#C56B5B] rounded">
                                     LOG OUT
                                 </a>
                             </li>
@@ -117,7 +117,7 @@ $hasil_kamar = mysqli_query($conn, $kamar);
     <!-- ini bagian yg promo harga -->
     <section class="px-[50px] mt-[40px] " data-aos="fade-up">
         <div class="py-[8px] bg-[#D1D5DB] rounded-[10px]">
-            <div class="flex flex-row gap-[10px] items-center bg-[url('../image/h2.png')] bg-cover bg-center px-[25px] p-[10px] relative overflow-hidden rounded-r-[10px] text-black">
+            <div class="flex flex-row gap-[10px] items-center bg-[url('image/h2.png')] bg-cover bg-center px-[25px] p-[10px] relative overflow-hidden rounded-r-[10px] text-black">
                 <div class="absolute inset-0 bg-gradient-to-r from-white/100 to-transparent rounded-r-[10px]"></div>
                 <div class="relative font-bold text-[20px]">
                     <p>Hotel terbaik</p>
@@ -133,26 +133,41 @@ $hasil_kamar = mysqli_query($conn, $kamar);
     </section>
 
     <!-- ini bagian rekomendasi kamar -->
-     <section class="px-[50px]  mt-[40px]" data-aos="fade-right">
+    <section class="px-[50px]  mt-[40px]" data-aos="fade-right">
         <p class="text-[24px] mb-[5px] font-semibold">Rekomendasi Kamar termurah</p>
         <div class="swiper">
             <div class="swiper-wrapper flex flex-row gap-[10px] pb-[15px]  whitespace-nowrap max-w-full ">
 
                 <?php while ($row = mysqli_fetch_assoc($result)): ?>
+                    <?php
+                    // Tentukan warna latar dan warna teks berdasarkan status kamar
+                    if ($row['status'] === 'tersedia') {
+                        $warnaStatus = '#caedb8'; // hijau muda
+                        $warnaTeks = '#000000';   // teks hitam
+                    } else {
+                        $warnaStatus = '#de2121ff'; // merah
+                        $warnaTeks = '#ffffff';     // teks putih
+                    }
+                    $teksStatus = ucfirst($row['status']);
+                    ?>
                     <div class="swiper-slide min-w-[280px]  shadow-[0_0px_25px_rgba(0,0,0,0.2)] rounded-[10px]  inline-block ">
                         <a href="">
                             <div>
-                                <img src="../<?= htmlspecialchars($row['foto']); ?>" alt="" class="rounded-t-[10px] w-[300px] h-[200px]">
+                                <img src="<?= htmlspecialchars($row['foto']); ?>" alt="" class="rounded-t-[10px] w-[300px] h-[200px]">
                             </div>
                             <div>
                                 <div class="p-[10px]">
+                                    <p class="text-[12px] inline-block px-[5px] rounded-[3px] font-semibold"
+                                        style="background-color: <?= $warnaStatus ?>; color: <?= $warnaTeks ?>;">
+                                        <?= htmlspecialchars($teksStatus); ?>
+                                    </p>
                                     <p class="text-[23px] font-semibold"> <?= htmlspecialchars($row['nama_kamar']); ?></p>
                                     <div class="flex flex-row gap-[3px] items-center">
                                         <!-- <img src="../image/loca2.png" alt="" class="w-[15px] h-[15px]"> -->
                                         <p><?= htmlspecialchars($row['tipe_kamar']); ?></p>
                                     </div>
                                     <div class="flex flex-row bg-[#335c67] inline-flex gap-[3px] py-[2px] px-[5px] rounded-[5px] text-white items-center">
-                                        <img src="../image/star.png" alt="" class="w-[15px] h-[15px]">
+                                        <img src="image/star.png" alt="" class="w-[15px] h-[15px]">
                                         <p><?= htmlspecialchars($row['rating']); ?></p>
                                     </div>
                                     <div class="flex flex-row items-center justify-between mt-[10px]">
@@ -161,7 +176,7 @@ $hasil_kamar = mysqli_query($conn, $kamar);
                                             <p class="text-[#b0323a] font-semibold"> Rp.<?= number_format($row['harga'], 0, ',', '.'); ?></p>
                                         </div>
                                         <div>
-                                            <a href="../design/detail_kmr.php?id=<?= $row['kamar_id']; ?>">
+                                            <a href="design/detail_kmr.php?id=<?= $row['kamar_id']; ?>">
                                                 <p class="bg-[#335c67] py-[5px] inline-block px-[10px] hover:scale-105 transition-all duration-200 rounded-[7px] text-white">Lihat detail</p>
                                             </a>
                                         </div>
@@ -186,7 +201,7 @@ $hasil_kamar = mysqli_query($conn, $kamar);
         <div class="flex flex-col text-center px-[50px] mt-[40px] gap-[15px]" data-aos="fade-zoom">
             <div>
                 <div class="flex flex-row items-center justify-center gap-[5px]">
-                    <img src="../image/loca2.png" alt="" class="w-[25px] h-[25px]">
+                    <img src="image/loca2.png" alt="" class="w-[25px] h-[25px]">
                     <p class="text-[25px] font-semibold"> Destinasi Populer</p>
                 </div>
                 <p>Jelajahi destinasi wisata populer di Indonesia dan temukan hotel terbaik di setiap kota</p>
@@ -194,42 +209,42 @@ $hasil_kamar = mysqli_query($conn, $kamar);
 
             <div class="flex flex-row justify-center gap-[20px] ">
                 <div class="relative w-[200px] h-[200px] rounded-[10px] hover:scale-105 transition-all duration-200">
-                    <img src="../image/bali.jpg" alt="" class="w-[200px] h-[200px] rounded-[10px] hover:scale-105 transition-all duration-200">
+                    <img src="image/bali.jpg" alt="" class="w-[200px] h-[200px] rounded-[10px] hover:scale-105 transition-all duration-200">
                     <div class="absolute inset-0 bg-black/10 rounded-[10px] flex justify-start items-end ">
                         <div class="flex flex-col leading-tight p-[5px] text-start">
                             <p class="text-white text-[20px] font-semibold">Bali</p>
                             <p class="text-white text-[13px] font-semibold">Pulau dewata dengan pantai indah</p>
-                            <p class="text-white text-[13px] font-semibold">100 Hotel tersedia</p>
+                         
                         </div>
                     </div>
                 </div>
                 <div class="relative w-[200px] h-[200px] rounded-[10px] hover:scale-105 transition-all duration-200">
-                    <img src="../image/jakarta.jpg" alt="" class="w-[200px] h-[200px] rounded-[10px] hover:scale-105 transition-all duration-200">
+                    <img src="image/jakarta.jpg" alt="" class="w-[200px] h-[200px] rounded-[10px] hover:scale-105 transition-all duration-200">
                     <div class="absolute inset-0 bg-black/30 rounded-[10px] flex justify-start items-end ">
                         <div class="flex flex-col leading-tight p-[5px] text-start">
                             <p class="text-white text-[20px] font-semibold">Jakarta</p>
                             <p class="text-white text-[13px] font-semibold">Kota dengan penduduk terpadat</p>
-                            <p class="text-white text-[13px] font-semibold">100 Hotel tersedia</p>
+                        
                         </div>
                     </div>
                 </div>
                 <div class="relative w-[200px] h-[200px] rounded-[10px] hover:scale-105 transition-all duration-200">
-                    <img src="../image/bandung.jpeg" alt="" class="w-[200px] h-[200px] rounded-[10px] hover:scale-105 transition-all duration-200">
+                    <img src="image/bandung.jpeg" alt="" class="w-[200px] h-[200px] rounded-[10px] hover:scale-105 transition-all duration-200">
                     <div class="absolute inset-0 bg-black/30 rounded-[10px] flex justify-start items-end ">
                         <div class="flex flex-col leading-tight p-[5px] text-start">
                             <p class="text-white text-[20px] font-semibold">Bandung</p>
                             <p class="text-white text-[13px] font-semibold">Kota dengan seribu kuliner</p>
-                            <p class="text-white text-[13px] font-semibold">100 Hotel tersedia</p>
+                        
                         </div>
                     </div>
                 </div>
                 <div class="relative w-[200px] h-[200px] rounded-[10px] hover:scale-105 transition-all duration-200">
-                    <img src="../image/jogja.jpeg" alt="" class="w-[200px] h-[200px] rounded-[10px] hover:scale-105 transition-all duration-200">
+                    <img src="image/jogja.jpeg" alt="" class="w-[200px] h-[200px] rounded-[10px] hover:scale-105 transition-all duration-200">
                     <div class="absolute inset-0 bg-black/30 rounded-[10px] flex justify-start items-end ">
                         <div class="flex flex-col leading-tight p-[5px] text-start">
                             <p class="text-white text-[20px] font-semibold">Yogyakarta</p>
                             <p class="text-white text-[13px] font-semibold">Kota dengan pemandangan indah dan nyaman</p>
-                            <p class="text-white text-[13px] font-semibold">100 Hotel tersedia</p>
+                        
                         </div>
                     </div>
                 </div>
@@ -245,18 +260,35 @@ $hasil_kamar = mysqli_query($conn, $kamar);
             <div class="grid grid-cols-2 gap-[10px]">
 
                 <?php while ($row = mysqli_fetch_assoc($hasil_kamar)): ?>
+                     <?php
+                    // Tentukan warna latar dan warna teks berdasarkan status kamar
+                    if ($row['status'] === 'tersedia') {
+                        $warnaStatus = '#caedb8'; // hijau muda
+                        $warnaTeks = '#000000';   // teks hitam
+                    } else {
+                        $warnaStatus = '#de2121ff'; // merah
+                        $warnaTeks = '#ffffff';     // teks putih
+                    }
+                    $teksStatus = ucfirst($row['status']);
+                    ?>
                     <div class="flex flex-1 flex-row gap-[10px] shadow-[0_0px_20px_rgba(0,0,0,0.2)] rounded-sm">
                         <div>
-                            <img src="../<?= htmlspecialchars($row['foto']); ?>" alt="" class="w-[250px] rounded-l-sm h-[165px]">
+                            <img src="<?= htmlspecialchars($row['foto']); ?>" alt="" class="w-[250px] rounded-l-sm h-[165px]">
                         </div>
                         <div class="min-w-[55%] p-[10px]">
-                            <p class="text-[25px] font-semibold">  <?= htmlspecialchars($row['nama_kamar']); ?></p>
+                            <div class="flex flex-row justify-between items-center">
+                                <p class="text-[25px] font-semibold"> <?= htmlspecialchars($row['nama_kamar']); ?></p>
+                                   <p class="text-[12px] inline-block px-[5px] rounded-[3px] font-semibold"
+                                        style="background-color: <?= $warnaStatus ?>; color: <?= $warnaTeks ?>;">
+                                        <?= htmlspecialchars($teksStatus); ?>
+                                    </p>
+                            </div>
                             <div class="flex flex-row gap-[3px] items-center">
                                 <!-- <img src="../image/loca2.png" alt="" class="w-[15px] h-[15px]"> -->
                                 <p><?= htmlspecialchars($row['tipe_kamar']); ?></p>
                             </div>
                             <div class="flex flex-row bg-[#335c67] inline-flex gap-[3px] py-[2px] px-[5px] rounded-[5px] text-white items-center">
-                                <img src="../image/star.png" alt="" class="w-[15px] h-[15px]">
+                                <img src="image/star.png" alt="" class="w-[15px] h-[15px]">
                                 <p><?= htmlspecialchars($row['rating']); ?></p>
                             </div>
                             <div class="flex flex-row items-center justify-between mt-[10px]">
@@ -265,7 +297,7 @@ $hasil_kamar = mysqli_query($conn, $kamar);
                                     <p class="text-[#b0323a] font-semibold">Rp.<?= number_format($row['harga'], 0, ',', '.'); ?></p>
                                 </div>
                                 <div>
-                                    <a href="../design/detail_kmr.php?id=<?= $row['kamar_id']; ?>">
+                                    <a href="design/detail_kmr.php?id=<?= $row['kamar_id']; ?>">
                                         <p class="bg-[#335c67] py-[5px] inline-block px-[10px] hover:scale-105 transition-all duration-200 rounded-[7px] text-white">Lihat detail</p>
                                     </a>
                                 </div>
@@ -294,16 +326,16 @@ $hasil_kamar = mysqli_query($conn, $kamar);
                 <div class="flex flex-col flex-1 gap-[4px]">
                     <p class="text-[20px] font-semibold">Hubungi kami</p>
                     <div class="flex flex-row gap-[5px] items-center">
-                        <img src="../image/placeholder.png" alt="" class="w-[20px] h-[20px]">
+                        <img src="image/placeholder.png" alt="" class="w-[20px] h-[20px]">
                         <p class="italic">Jl. depok kecamatan bogor kota makasar</p>
                     </div>
 
                     <div class="flex flex-row gap-[5px] items-center">
-                        <img src="../image/phone-call.png" alt="" class="w-[20px] h-[20px]">
+                        <img src="image/phone-call.png" alt="" class="w-[20px] h-[20px]">
                         <p>+6289483948</p>
                     </div>
                     <div class="flex flex-row gap-[5px] items-center">
-                        <img src="../image/gmail.png" alt="" class="w-[20px] h-[20px]">
+                        <img src="image/gmail.png" alt="" class="w-[20px] h-[20px]">
                         <p>lumine@gmail.com</p>
                     </div>
 
@@ -332,7 +364,7 @@ $hasil_kamar = mysqli_query($conn, $kamar);
             <!-- form loging-->
             <div id="loginForm" class="">
                 <h2 class="text-2xl font-bold mb-4 text-center">Login</h2>
-                <form action="../act/act_login.php" method="POST">
+                <form action="act/act_login.php" method="POST">
                     <input type="email" name="email" placeholder="Email" class="border w-full p-2 rounded mb-3">
                     <input type="password" name="password" placeholder="Kata sandi" class="border w-full p-2 rounded mb-3">
                     <button class="bg-[#335c67] text-white w-full py-2 rounded hover:opacity-90">Masuk</button>
@@ -346,7 +378,7 @@ $hasil_kamar = mysqli_query($conn, $kamar);
             <!-- form regis -->
             <div id="registerForm" class="hidden">
                 <h2 class="text-2xl font-bold mb-4 text-center">Daftar</h2>
-                <form action="../act/act_regis.php" method="POST" enctype="multipart/form-data">
+                <form action="act/act_regis.php" method="POST" enctype="multipart/form-data">
                     <input type="text" name="nama" placeholder="Nama lengkap" class="border w-full p-2 rounded mb-3">
                     <input type="email" name="email" placeholder="Email" class="border w-full p-2 rounded mb-3">
                     <input type="password" name="password" placeholder="Kata sandi" class="border w-full p-2 rounded mb-3">
@@ -402,7 +434,7 @@ $hasil_kamar = mysqli_query($conn, $kamar);
     <script>
         const swiper = new Swiper(".swiper", {
             slidesPerView: 4,
-            spaceBetween:  0,
+            spaceBetween: 0,
             grabCursor: true,
             keyboard: {
                 enabled: true,

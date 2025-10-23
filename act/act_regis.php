@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // validasi data kosong
     if (empty($nama) || empty($email) || empty($password)) {
-        echo "<script>alert('Semua field wajib diisi!'); window.location='../design/home.php';</script>";
+        echo "<script>alert('Semua field wajib diisi!'); window.location='../index.php';</script>";
         exit;
     }
 
@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->store_result();
 
     if ($stmt->num_rows > 0) {
-        echo "<script>alert('Email sudah terdaftar!'); window.location='../design/home.php';</script>";
+        echo "<script>alert('Email sudah terdaftar!'); window.location='../index.php';</script>";
         exit;
     }
     $stmt->close();
@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             move_uploaded_file($_FILES["foto"]["tmp_name"], $targetFilePath);
             $foto = $fileName;
         } else {
-            echo "<script>alert('Format foto tidak didukung! (Gunakan JPG, JPEG, PNG, atau GIF)'); window.location='../design/home.php';</script>";
+            echo "<script>alert('Format foto tidak didukung! (Gunakan JPG, JPEG, PNG, atau GIF)'); window.location='../index.php';</script>";
             exit;
         }
     }
@@ -59,15 +59,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->bind_param("sssss", $nama, $email, $nmr_telpon, $foto, $hashedPassword);
 
     if ($stmt->execute()) {
-        echo "<script>alert('Regis berhasil.'); window.location='../design/home.php';</script>";
+        echo "<script>alert('Regis berhasil.'); window.location='../index.php';</script>";
     } else {
-        echo "<script>alert('Registrasi gagal, coba lagi!'); window.location='../design/home.php';</script>";
+        echo "<script>alert('Registrasi gagal, coba lagi!'); window.location='../index.php';</script>";
     }
 
     $stmt->close();
     $conn->close();
 } else {
-    header("Location: ../design/home.php");
+    header("Location: ../index.php");
     exit;
 }
 ?>

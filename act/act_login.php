@@ -30,19 +30,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 'foto' => $user['foto']
             ];
 
-            header("Location: ../design/home.php");
+            header("Location: ../index.php");
             exit();
         } else {
-            echo "<script>alert('Password salah!'); window.location='../design/home.php';</script>";
+            echo "<script>alert('Password salah!'); window.location='../index.php';</script>";
         }
     } else {
-        echo "<script>alert('Email tidak ditemukan!'); window.location='../design/home.php';</script>";
+        echo "<script>alert('Email tidak ditemukan!'); window.location='../index.php';</script>";
     }
 
     $stmt->close();
     $conn->close();
 } else {
-    header("Location: ../design/home.php");
+    header("Location: ../index.php");
     exit();
 }
 ?>

@@ -15,6 +15,29 @@ if (isset($_GET['id'])) {
     $hasil_kamar = mysqli_query($conn, $query);
 
     if ($row = mysqli_fetch_assoc($hasil_kamar)) {
+
+        // Ambil semua foto untuk kamar ini
+        $queryFoto = "SELECT foto FROM foto_kamar WHERE kamar_id = $id_kamar";
+        $hasilFoto = mysqli_query($conn, $queryFoto);
+
+        $fotos = [];
+        if ($hasilFoto && mysqli_num_rows($hasilFoto) > 0) {
+            while ($f = mysqli_fetch_assoc($hasilFoto)) {
+                $fotos[] = $f['foto'];
+            }
+        }
+
+        // Ambil semua ulasan untuk kamar ini
+        $queryUlasan = "
+    SELECT u.*, us.nama AS nama_user, us.foto AS foto_user
+    FROM ulasan u
+    JOIN pesan p ON u.pesan_id = p.pesan_id
+    JOIN user us ON u.user_id = us.user_id
+    WHERE p.kamar_id = $id_kamar
+    ORDER BY u.`tanggal-buat` DESC
+";
+        $hasilUlasan = mysqli_query($conn, $queryUlasan);
+
         // $row sekarang berisi data kamar yang sesuai
         $nama_kamar = $row['nama_kamar'];
         $alamat = $row['alamat'];
@@ -23,6 +46,7 @@ if (isset($_GET['id'])) {
         $kapasitas = $row['kapasitas'];
         $rating = $row['rating'];
         $foto = $row['foto'];
+        $status = $row['status'];
         // dll
     } else {
         echo "Kamar tidak ditemukan!";
@@ -32,36 +56,6 @@ if (isset($_GET['id'])) {
     echo "ID kamar tidak ada!";
     exit;
 }
-
-// buat tanggal otomatis yg pemesanan
-$checkin = $_POST['check_in'] ?? null;
-$checkout = $_POST['check_out'] ?? null;
-$jumlah_kamar = intval($_POST['jumlah_kamar'] ?? 0);
-$jumlah_tamu = intval($_POST['jumlah_tamu'] ?? 0);
-$total_harga = floatval($_POST['total'] ?? 0); // bisa hitung ulang di PHP juga
-$tanggal_buat = date('Y-m-d H:i:s'); // otomatis sekarang
-
-$user_id = $_SESSION['user']['id']; // ambil dari session
-$kamar_id = $id_kamar;
-
-$sql = "INSERT INTO pesan (user_id, kamar_id, check_in, check_out, jumlah_kamar, total_harga, tanggal_buat, jumlah_tamu)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-
-$stmt = $conn->prepare($sql);
-$stmt->bind_param(
-    "iissidsi",
-    $user_id,
-    $kamar_id,
-    $checkin,
-    $checkout,
-    $jumlah_kamar,
-    $total_harga,
-    $tanggal_buat,
-    $jumlah_tamu
-);
-$stmt->execute();
-
-
 
 // ambil data buat seluruh kamar
 $kamar = "SELECT * FROM kamar";
@@ -106,7 +100,7 @@ $rekom_kamar = mysqli_query($conn, $kamar);
     <!-- ini nabbar -->
     <nav id="navbar" class=" fixed top-0 left-0 w-full z-[50]  bg-[#234046]/60 backdrop-blur-md transition-all duration-300 ">
         <div class="flex flex-row  px-[50px] py-[20px] items-center justify-between">
-            <a href="../design/home.php">
+            <a href="../index.php">
                 <div class="flex flex-row text-center items-center gap-[5px] ">
                     <img src="../image/logobener.png" alt="" class="w-[45px]">
                     <p class="font-semibold text-white text-[19px]">LUMINE <span class="font-bold text-[#e09f3e]">HOTEL</span> </p>
@@ -153,32 +147,43 @@ $rekom_kamar = mysqli_query($conn, $kamar);
 
     <!-- ini foto kamar -->
     <section class="px-[50px] pt-[70px] mb-[90px] mt-10 flex gap-1 h-[300px]">
-        <div class="flex-2 w-1/2 h-full">
-            <img src="../image/r1.jpg" alt=""
-                class="openbutton w-full h-75 object-cover rounded-l-[25px] hover:cursor-pointer">
-        </div>
-        <div class="grid grid-cols-2 w-1/2 h-full gap-1">
-            <img src="../image/r1.jpg" alt=""
-                class="openbutton w-full h-[148px] object-cover hover:cursor-pointer">
-
-            <img src="../image/r1.jpg" alt=""
-                class="openbutton  w-full h-[148px] object-cover rounded-tr-[25px] hover:cursor-pointer">
-            <img src="../image/r1.jpg" alt=""
-                class="openbutton w-full h-[148px] object-cover hover:cursor-pointer">
-            <img src="../image/r1.jpg" alt=""
-                class="openbutton w-full h-[148px] object-cover rounded-br-[25px] hover:cursor-pointer">
-        </div>
-
+        <?php if (!empty($fotos)): ?>
+            <div class="flex-2 w-1/2 h-full">
+                <img src="../<?= htmlspecialchars($fotos[0]); ?>"
+                    alt="Foto utama kamar"
+                    class="openbutton w-full h-75 object-cover rounded-l-[25px] hover:cursor-pointer">
+            </div>
+            <div class="grid grid-cols-2 w-1/2 h-full gap-1">
+                <?php for ($i = 1; $i < count($fotos); $i++): ?>
+                    <img src="../<?= htmlspecialchars($fotos[$i]); ?>"
+                        alt="Foto kamar <?= $i + 1; ?>"
+                        class="openbutton w-full h-[148px] object-cover <?= $i === 2 ? 'rounded-tr-[25px]' : ($i === count($fotos) - 1 ? 'rounded-br-[25px]' : ''); ?> hover:cursor-pointer">
+                <?php endfor; ?>
+            </div>
+        <?php else: ?>
+            <div class="w-full h-[300px] flex items-center justify-center bg-gray-100 rounded-[25px]">
+                <p class="text-gray-500 italic">Belum ada foto untuk kamar ini.</p>
+            </div>
+        <?php endif; ?>
     </section>
+
 
     <!-- deskripsi kamar -->
     <section class="px-[50px] mt-[20px] ">
         <div class="flex flex-row gap-[20px]">
+            <!-- deskripsi kamar -->
             <div class="w-2/3">
-
                 <div class="flex flex-row justify-between items-center">
                     <div class="leading-tight">
-                        <p class="bg-[#caedb8] inline-block px-[5px] rounded-[5px] py-[3px]">Tersedia</p>
+                        <?php
+                        // Tentukan warna latar belakang berdasarkan status
+                        $warnaStatus = $status === 'tersedia' ? '#caedb8' : '#de2121ff';
+                        $teksStatus = ucfirst($status); // jadikan huruf pertama kapital
+                        ?>
+                        <p class="inline-block px-[5px] rounded-[5px] py-[3px]" style="background-color: <?= $warnaStatus; ?>;">
+                            <?= htmlspecialchars($teksStatus); ?>
+                        </p>
+
                         <p class="text-[30px] font-semibold"> <?= htmlspecialchars($nama_kamar); ?></p>
                     </div>
                     <p class="text-[30px] font-semibold text-[#b0323a]">Rp.<?= number_format($harga, 0, ',', '.'); ?></p>
@@ -235,39 +240,31 @@ $rekom_kamar = mysqli_query($conn, $kamar);
                 <div class="mt-[10px]">
                     <p class="text-[19px] font-semibold mb-[10px]">Ulasan kamar</p>
                     <div class="flex flex-wrap gap-[10px]">
-
-                        <div class="flex flex-col w-[375px] p-[8px] shadow-[0_0px_25px_rgba(0,0,0,0.2)] rounded-[10px] gap-[5px]">
-                            <div class="flex flex-row justify-between items-center ">
-                                <div class="flex flex-row items-center gap-[5px] leading-tight">
-                                    <img src="../image/user.png" alt="" class="w-[40px] h-[40px]">
+                        <?php if (mysqli_num_rows($hasilUlasan) > 0): ?>
+                            <?php while ($ulasan = mysqli_fetch_assoc($hasilUlasan)): ?>
+                                <div class="flex flex-col w-[375px] p-[8px] shadow-[0_0px_25px_rgba(0,0,0,0.2)] rounded-[10px] gap-[5px]">
+                                    <div class="flex flex-row justify-between items-center ">
+                                        <div class="flex flex-row items-center gap-[5px] leading-tight">
+                                            <img src="../upload/<?= htmlspecialchars($ulasan['foto_user'] ?? 'user.png'); ?>" alt="" class="w-[40px] h-[40px] rounded-full object-cover">
+                                            <div>
+                                                <p class="text-[17px] font-semibold"><?= htmlspecialchars($ulasan['nama_user']); ?></p>
+                                                <p class="text-[13px] text-gray-500">
+                                                    <?= date('d M Y', strtotime($ulasan['tanggal-buat'])); ?>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <p class="bg-[#335c67] inline-block px-[5px] rounded-[5px] text-[17px] text-white">
+                                            <?= htmlspecialchars($ulasan['rating']); ?>/5
+                                        </p>
+                                    </div>
                                     <div>
-                                        <p class="text-[17px]">Nama user</p>
-                                        <p class="text-[13px]">6 Hari lalu</p>
+                                        <p class="text-[14px]"><?= htmlspecialchars($ulasan['komen']); ?></p>
                                     </div>
                                 </div>
-                                <p class="bg-[#335c67] inline-block px-[5px] rounded-[5px] text-[17px] text-white">4/5</p>
-                            </div>
-                            <div>
-                                <p class="text-[14px]">Kamar ini sangat bagus dan pelayanan yang sangat ramah</p>
-                            </div>
-                        </div>
-                        <div class="flex flex-col w-[375px] p-[8px] shadow-[0_0px_25px_rgba(0,0,0,0.2)] rounded-[10px] gap-[5px]">
-                            <div class="flex flex-row justify-between items-center ">
-                                <div class="flex flex-row items-center gap-[5px] leading-tight">
-                                    <img src="../image/user.png" alt="" class="w-[40px] h-[40px]">
-                                    <div>
-                                        <p class="text-[17px]">Nama user</p>
-                                        <p class="text-[13px]">6 Hari lalu</p>
-                                    </div>
-                                </div>
-                                <p class="bg-[#335c67] inline-block px-[5px] rounded-[5px] text-[17px] text-white">4/5</p>
-                            </div>
-                            <div>
-                                <p class="text-[14px]">Kamar ini sangat bagus dan pelayanan yang sangat ramah</p>
-                            </div>
-                        </div>
-
-
+                            <?php endwhile; ?>
+                        <?php else: ?>
+                            <p class="text-gray-500 italic">Belum ada ulasan untuk kamar ini.</p>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -275,9 +272,11 @@ $rekom_kamar = mysqli_query($conn, $kamar);
             <!-- kotak pesan -->
             <div class="w-1/3">
                 <div class="border border-[#6B7280] p-[10px] rounded-[10px] sticky">
-                    <form action="" method="POST">
+                    <form action="../act/act_pesan.php" method="POST">
                         <div class="flex flex-col gap-[5px]">
                             <div class="grid grid-cols-2 gap-[5px]">
+                                <input type="hidden" name="kamar_id" value="<?= $row['kamar_id']; ?>">
+
                                 <div>
                                     <p>Check-in</p>
                                     <input type="date" name="check_in" id="checkin" class="border border-[#6B7280] w-full w-full p-[5px] rounded-[10px]">
@@ -288,11 +287,11 @@ $rekom_kamar = mysqli_query($conn, $kamar);
                                 </div>
                                 <div>
                                     <p>Kamar yang dipesan</p>
-                                    <input type="number" name="jumlah_kamar" id="jumlahKamar" placeholder="0" class="border border-[#6B7280] w-full p-[5px] rounded-[10px]">
+                                    <input type="number" name="jumlah_kamar" id="jumlahKamar" placeholder="1" min="1" value="1" class="border border-[#6B7280] w-full p-[5px] rounded-[10px]">
                                 </div>
                                 <div>
                                     <p>Jumlah tamu</p>
-                                    <input type="number" name="jumlah_tamu" id="jumlah_tamu" placeholder="0" class="border border-[#6B7280] w-full p-[5px] rounded-[10px]">
+                                    <input type="number" name="jumlah_tamu" id="jumlah_tamu" placeholder="1" min="1" value="1" class="border border-[#6B7280] w-full p-[5px] rounded-[10px]">
                                 </div>
                             </div>
                             <div class="justify-center items-center text-center ">
@@ -314,13 +313,19 @@ $rekom_kamar = mysqli_query($conn, $kamar);
 
 
                                 <?php if ($isLoggedIn): ?>
-                                    <button type="submit" class="text-center justify-center items-center text-white font-semibold bg-[#56694f] py-[5px] rounded-[10px] w-full hover:scale-103 hover:bg-[#6E8667] transition-all duration-200">
-                                        Pesan sekarang
-
-                                    </button>
+                                    <?php if ($status === 'tersedia'): ?>
+                                        <button type="submit" class="text-center justify-center items-center text-white font-semibold bg-[#56694f] py-[5px] rounded-[10px] w-full hover:scale-103 hover:bg-[#6E8667] transition-all duration-200">
+                                            Pesan sekarang
+                                        </button>
+                                    <?php else: ?>
+                                        <button type="button" disabled class="text-center justify-center items-center text-white font-semibold bg-gray-400 py-[5px] rounded-[10px] w-full cursor-not-allowed">
+                                            Kamar Penuh
+                                        </button>
+                                    <?php endif; ?>
                                 <?php else: ?>
-                                    <button type="submit" id="btnpesan" class="text-center justify-center items-center text-white font-semibold bg-gray-500 py-[5px] rounded-[10px] w-full cursor-not-allowed">
-                                        Pesan sekarang
+                                    <button type="button" id="btnpesan"
+                                        class="text-center justify-center items-center text-white font-semibold bg-gray-400 py-[5px] rounded-[10px] w-full hover:scale-103 transition-all duration-200 cursor-not-allowed">
+                                        Login terlebih dahulu
                                     </button>
                                 <?php endif; ?>
 
@@ -339,6 +344,17 @@ $rekom_kamar = mysqli_query($conn, $kamar);
             <div class="swiper-wrapper flex flex-row gap-[10px] pb-[15px]  whitespace-nowrap max-w-full ">
 
                 <?php while ($row = mysqli_fetch_assoc($rekom_kamar)): ?>
+                    <?php
+                    // Tentukan warna latar dan warna teks berdasarkan status kamar
+                    if ($row['status'] === 'tersedia') {
+                        $warnaStatus = '#caedb8'; // hijau muda
+                        $warnaTeks = '#000000';   // teks hitam
+                    } else {
+                        $warnaStatus = '#de2121ff'; // merah
+                        $warnaTeks = '#ffffff';     // teks putih
+                    }
+                    $teksStatus = ucfirst($row['status']);
+                    ?>
                     <div class="swiper-slide min-w-[280px]  shadow-[0_0px_25px_rgba(0,0,0,0.2)] rounded-[10px]  inline-block ">
                         <a href="">
                             <div>
@@ -346,6 +362,11 @@ $rekom_kamar = mysqli_query($conn, $kamar);
                             </div>
                             <div>
                                 <div class="p-[10px]">
+                                    <!-- <p></p> -->
+                                    <p class="text-[12px] inline-block px-[5px] rounded-[3px] font-semibold"
+                                        style="background-color: <?= $warnaStatus ?>; color: <?= $warnaTeks ?>;">
+                                        <?= htmlspecialchars($teksStatus); ?>
+                                    </p>
                                     <p class="text-[23px] font-semibold"> <?= htmlspecialchars($row['nama_kamar']); ?></p>
                                     <div class="flex flex-row gap-[3px] items-center">
                                         <!-- <img src="../image/loca2.png" alt="" class="w-[15px] h-[15px]"> -->
@@ -353,7 +374,7 @@ $rekom_kamar = mysqli_query($conn, $kamar);
                                     </div>
                                     <div class="flex flex-row bg-[#335c67] inline-flex gap-[3px] py-[2px] px-[5px] rounded-[5px] text-white items-center">
                                         <img src="../image/star.png" alt="" class="w-[15px] h-[15px]">
-                                        <p>4,5</p>
+                                        <p><?= htmlspecialchars($row['rating']); ?></p>
                                     </div>
                                     <div class="flex flex-row items-center justify-between mt-[10px]">
                                         <div class="leading-tight">
@@ -530,20 +551,39 @@ $rekom_kamar = mysqli_query($conn, $kamar);
 
     <!-- ini script buat yg modal foto -->
     <script>
-        const modal = document.getElementById('modal');
-        const openbuttons = document.querySelectorAll('.openbutton');
-        const closeModal = document.getElementById('closeModal');
-        openbuttons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                modal.classList.remove('hidden');
+        document.addEventListener('DOMContentLoaded', () => {
+            const modal = document.getElementById('modal');
+            const closeModal = document.getElementById('closeModal');
+            const openbuttons = document.querySelectorAll('.openbutton');
+            const fotoContainer = document.querySelector('#foto .swiper-wrapper'); 
+
+            // Setiap kali gambar diklik
+            openbuttons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Ambil  gambar yang diklik
+                    const src = btn.getAttribute('src');
+
+                    //  ulang  modal dengan gambar tersebut
+                    fotoContainer.innerHTML = `
+                <img src="${src}" alt="Foto kamar" class="w-full h-full object-contain rounded-[15px]">
+            `;
+
+                    // Tampilkan modal
+                    modal.classList.remove('hidden');
+                });
             });
-            closeModal.onclick = () => modal.classList.add('hidden');
+
+            // Tutup modal kalo tombol X diklik
+            closeModal.addEventListener('click', () => {
+                modal.classList.add('hidden');
+            });
+
+            // Tutup modal kalo klik di luar gambar
             modal.addEventListener('click', (e) => {
                 if (e.target === modal) {
                     modal.classList.add('hidden');
                 }
             });
-
         });
     </script>
 
@@ -649,20 +689,61 @@ $rekom_kamar = mysqli_query($conn, $kamar);
 
     <!-- buat alert yg pesan -->
     <script>
-        document.getElementById("btnpesan").addEventListener("click", function(e) {
-            e.preventDefault(); // cegah submit langsung
+        document.addEventListener('DOMContentLoaded', function() {
+            const formPesan = document.querySelector('form[action="../act/act_pesan.php"]');
+            const checkin = document.getElementById('checkin');
+            const checkout = document.getElementById('checkout');
+            const jumlahKamar = document.getElementById('jumlahKamar');
+            const jumlahTamu = document.getElementById('jumlah_tamu');
 
-            const form = e.target.closest("form");
+            <?php if ($isLoggedIn): ?>
+                // User sudah login, maka kita validasi isi data form
+                formPesan.addEventListener('submit', function(e) {
+                    e.preventDefault(); // cegah submit otomatis
 
-            // cek validasi HTML bawaan
-            if (!form.checkValidity()) {
-                form.reportValidity(); // munculkan pesan bawaan browser
-                return; // hentikan proses kalau belum valid
-            }
+                    // ambil nilai input
+                    const ci = checkin.value.trim();
+                    const co = checkout.value.trim();
+                    const jk = jumlahKamar.value.trim();
+                    const jt = jumlahTamu.value.trim();
 
-            Swal.fire("Login terlebih dahulu!");;
+                    // validasi sederhana
+                    if (!ci || !co || !jk || !jt) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Data belum lengkap',
+                            text: 'Silakan isi semua data sebelum melakukan pemesanan.'
+                        });
+                        return;
+                    }
+
+                    // validasi tanggal (check-in < check-out)
+                    if (new Date(ci) >= new Date(co)) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Tanggal tidak valid',
+                            text: 'Tanggal check-out harus setelah tanggal check-in.'
+                        });
+                        return;
+                    }
+
+                    // jika semua valid, baru submit form
+                    formPesan.submit();
+                });
+            <?php else: ?>
+                // User belum login → alert login sudah ada
+                document.getElementById("btnpesan").addEventListener("click", function(e) {
+                    e.preventDefault();
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Silakan login terlebih dahulu',
+                        text: 'Anda harus login sebelum dapat melakukan pemesanan.'
+                    });
+                });
+            <?php endif; ?>
         });
     </script>
+
 
     <!-- ini buat ngitung yg jumlah permalam -->
     <script>
