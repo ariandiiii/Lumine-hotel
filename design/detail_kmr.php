@@ -44,6 +44,7 @@ if (isset($_GET['id'])) {
         $harga = $row['harga'];
         $tipe_kamar = $row['tipe_kamar'];
         $kapasitas = $row['kapasitas'];
+        $kamar_tersisa = $row['kamar_tersisa'];
         $rating = $row['rating'];
         $foto = $row['foto'];
         $status = $row['status'];
@@ -200,6 +201,7 @@ $rekom_kamar = mysqli_query($conn, $kamar);
                             <p>Kapasitas</p>
                             <p class="text-[16px] font-semibold"><?= htmlspecialchars($kapasitas); ?></p>
                         </div>
+                       
                     </div>
                     <div class="w-2/3">
                         <p class="mt-[5px] text-[19px] font-semibold">Fasilitas kamar</p>
@@ -356,7 +358,7 @@ $rekom_kamar = mysqli_query($conn, $kamar);
                     $teksStatus = ucfirst($row['status']);
                     ?>
                     <div class="swiper-slide min-w-[280px]  shadow-[0_0px_25px_rgba(0,0,0,0.2)] rounded-[10px]  inline-block ">
-                        <a href="">
+                        <a href="../design/detail_kmr.php?id=<?= $row['kamar_id']; ?>">
                             <div>
                                 <img src="../<?= htmlspecialchars($row['foto']); ?>" alt="" class="rounded-t-[10px] w-[300px] h-[200px]">
                             </div>

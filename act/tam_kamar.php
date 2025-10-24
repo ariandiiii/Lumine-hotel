@@ -9,12 +9,13 @@ if(isset($_POST['submit'])){
     $harga = $_POST['harga'];
     $kapasitas = $_POST['kapasitas'];
     $fasilitas = $_POST['fasilitas'];
+    $alamat = $_POST['alamat'];
     $rating = $_POST['rating'];
     $status = $_POST['status'];
 
     //  Simpan data kamar dulu
-    $query = "INSERT INTO kamar (nama_kamar, tipe_kamar, harga, rating, kapasitas, fasilitas, foto, status)
-              VALUES ('$nama', '$tipe', '$harga', '$rating', '$kapasitas', '$fasilitas', '', '$status')";
+    $query = "INSERT INTO kamar (nama_kamar, tipe_kamar, harga, rating, kapasitas, fasilitas, alamat, foto, status)
+              VALUES ('$nama', '$tipe', '$harga', '$rating', '$kapasitas', '$fasilitas', '$alamat', '', '$status')";
     if(mysqli_query($conn, $query)){
         // ambil id kamar yang baru dimasukin
         $kamar_id = mysqli_insert_id($conn);
