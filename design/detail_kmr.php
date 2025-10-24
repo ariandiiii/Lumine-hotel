@@ -44,7 +44,6 @@ if (isset($_GET['id'])) {
         $harga = $row['harga'];
         $tipe_kamar = $row['tipe_kamar'];
         $kapasitas = $row['kapasitas'];
-        $kamar_tersisa = $row['kamar_tersisa'];
         $rating = $row['rating'];
         $foto = $row['foto'];
         $status = $row['status'];
