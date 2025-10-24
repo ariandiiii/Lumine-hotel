@@ -61,6 +61,7 @@ if (isset($_GET['id_pesan'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="../image/logobener.png" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>Pembayaran</title>
 </head>
 
@@ -388,6 +389,7 @@ if (isset($_GET['id_pesan'])) {
         });
     </script>
 
+<!-- alert buat yg pesan -->
     <script>
         const metodeInputs = document.querySelectorAll('input[name="payment"]');
         const metodeInputHidden = document.getElementById('metodeInput');
@@ -409,7 +411,11 @@ if (isset($_GET['id_pesan'])) {
             // cuma validasi kalau klik "bayar"
             if (aksi === 'bayar' && (!metode || metode === 'tidak_dipilih')) {
                 e.preventDefault();
-                alert("Pilih metode pembayaran dulu, bro!");
+               Swal.fire({
+                            icon: 'error',
+                            title: 'Metode pembayaran masih kosong',
+                            text: 'Siliahkan isi metode pembayaran terlebih dahulu'
+                        });
             }
         });
     </script>

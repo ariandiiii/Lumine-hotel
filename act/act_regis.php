@@ -54,9 +54,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // hash password
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
+    // role default user
+    $role = 'user';
+
     // insert user baru
-    $stmt = $conn->prepare("INSERT INTO user (nama, email, nmr_telpon, foto, password) VALUES (?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssss", $nama, $email, $nmr_telpon, $foto, $hashedPassword);
+    $stmt = $conn->prepare("INSERT INTO user (nama, email, nmr_telpon, foto, password, role) VALUES (?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("ssssss", $nama, $email, $nmr_telpon, $foto, $hashedPassword, $role);
+
 
     if ($stmt->execute()) {
         echo "<script>alert('Regis berhasil.'); window.location='../index.php';</script>";
@@ -70,4 +74,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header("Location: ../index.php");
     exit;
 }
-?>

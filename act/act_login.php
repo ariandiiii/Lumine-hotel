@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = trim($_POST['password']);
 
     // siapkan statement biar aman dari SQL Injection
-    $stmt = $conn->prepare("SELECT user_id, nama, email, foto, password FROM user WHERE email = ? LIMIT 1");
+    $stmt = $conn->prepare("SELECT user_id, nama, email, foto, password, role FROM user WHERE email = ? LIMIT 1");
     $stmt->bind_param("s", $email);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -27,10 +27,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 'id' => $user['user_id'],
                 'nama' => $user['nama'],
                 'email' => $user['email'],
-                'foto' => $user['foto']
+                'foto' => $user['foto'],
+                'role' => $user['role']
             ];
 
-            header("Location: ../index.php");
+
+            if ($user['role'] === 'admin') {
+                header("Location: ../design/admin.php");
+            } else {
+                header("Location: ../index.php");
+            }
             exit();
         } else {
             echo "<script>alert('Password salah!'); window.location='../index.php';</script>";
@@ -45,4 +51,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     header("Location: ../index.php");
     exit();
 }
-?>

@@ -239,7 +239,7 @@ $rekom_kamar = mysqli_query($conn, $kamar);
                 <!-- ulasan -->
                 <div class="mt-[10px]">
                     <p class="text-[19px] font-semibold mb-[10px]">Ulasan kamar</p>
-                    <div class="flex flex-wrap gap-[10px]">
+                    <div class="grid grid-cols-2 gap-[10px] overflow-y-auto max-h-[300px] pr-[10px] p-[5px]">
                         <?php if (mysqli_num_rows($hasilUlasan) > 0): ?>
                             <?php while ($ulasan = mysqli_fetch_assoc($hasilUlasan)): ?>
                                 <div class="flex flex-col w-[375px] p-[8px] shadow-[0_0px_25px_rgba(0,0,0,0.2)] rounded-[10px] gap-[5px]">
