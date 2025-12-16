@@ -79,7 +79,7 @@ $enumValues = explode("','", $matches[1]);
 
             <!-- Tambah Kamar -->
             <div class="bg-white p-6 rounded-xl shadow-md mb-10">
-                <h2 class="text-2xl font-semibold text-[#234046] mb-4">Tambah Kamar</h2>
+                <h2 class="text-2xl font-semibold text-[#234046] mb-4">Tambahkan Kamar</h2>
                 <form action="../act/tam_kamar.php" method="POST" enctype="multipart/form-data"
                     class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <input type="text" name="nama_kamar" placeholder="Nama kamar" required
